@@ -13,14 +13,9 @@ public class Collision : Affector
     {
         foreach (var collisionBox in _meta.GetOutside(this))
             if (collisionBox.Intersects(
-                new Polygon(
-                (_mechanics.Position + _mechanics.Velocity).ToPoint(),
-                new[] {
-                    new Point(0, 0),
-                    new Vector2(BoxSize.X, 0).ToPoint(),
-                    new Vector2(0, BoxSize.Y).ToPoint(),
-                    BoxSize.ToPoint()
-                })))
+                new Rectangle(
+                    (_mechanics.Position + _mechanics.Velocity).ToPoint(),
+                    BoxSize.ToPoint())))
                 _velocity = -_mechanics.Velocity;
     }
 
