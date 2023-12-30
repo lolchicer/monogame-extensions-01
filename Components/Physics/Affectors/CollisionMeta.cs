@@ -13,7 +13,7 @@ public class CollisionMeta
         return from collision in Collisions
                where collision != excludedCollision
                select new Rectangle(
-                collision.Mechanics.Position.ToPoint(),
+                collision.Position.ToPoint(),
                 collision.BoxSize.ToPoint());
     }
 }

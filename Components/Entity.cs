@@ -21,6 +21,9 @@ public abstract class Entity : DrawableGameComponent
 
     private SpriteDirection _spriteDirection = SpriteDirection.Right;
 
+    private MechanicsVelocityPoller _mechanicsVelocityPoller;
+    private MechanicsPositionPoller _mechanicsPositionPoller;
+    private Input _input;
     private IEnumerable<Affector> _affectors;
     private Level _level;
 
@@ -62,11 +65,11 @@ public abstract class Entity : DrawableGameComponent
 
     public override void Update(GameTime gameTime)
     {
+        _mechanicsVelocityPoller.Update(gameTime);
+        _mechanicsPositionPoller.Update(gameTime);
+
         foreach (var affector in _affectors)
-        {
             affector.Update(gameTime);
-            Mechanics.Velocity += affector.Velocity;
-        }
         Mechanics.Update(gameTime);
 
         base.Update(gameTime);
@@ -108,31 +111,25 @@ public abstract class Entity : DrawableGameComponent
 
     public Entity(Level level) : base(level.Game)
     {
-        var mechanics = new Mechanics(level.Game);
-        var input = new Input(mechanics);
-
         _level = level;
+        var mechanics = new Mechanics(level.Game);
+        _mechanicsVelocityPoller = new MechanicsVelocityPoller(mechanics);
+        _mechanicsPositionPoller = new MechanicsPositionPoller(mechanics);
+
+        _input = new Input(_mechanicsVelocityPoller, mechanics);
+
         Mechanics = mechanics;
         _affectors = new Affector[] {
-            new Friction(Mechanics),
-            new Collision(Mechanics, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 }),
-            input
+            new Friction(_mechanicsVelocityPoller, Mechanics),
+            // new Test(mechanics),
+            // new Collision(Mechanics, _mechanicsVelocityPoller, _mechanicsPositionPoller, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 }),
+            _input
         };
     }
 
     // побочные эффекты для Player
-    public Entity(Level level, Player player) : base(level.Game)
+    public Entity(Level level, Player player) : this(level)
     {
-        var mechanics = new Mechanics(level.Game);
-        var input = new Input(mechanics);
-        player.Inputs.Add(input);
-
-        _level = level;
-        Mechanics = mechanics;
-        _affectors = new Affector[] {
-            new Friction(Mechanics),
-            input,
-            new Collision(Mechanics, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 })
-        };
+        player.Inputs.Add(_input);
     }
 }

@@ -11,6 +11,8 @@ public class Linking : Affector
         _velocity = _linkVelocity;
     }
 
+    public Vector2 LinkVelocity => _linkVelocity;
+
     public Linking(Vector2 velocity, Mechanics mechanics)
     : base(mechanics)
     {

@@ -4,9 +4,10 @@ namespace MonogameTest01;
 
 public abstract class Affector : GameComponent
 {
+    private Mechanics _mechanics;
+    
     protected Vector2 _velocity;
-    protected Mechanics _mechanics;
-
+    
     protected abstract void UpdateVelocity(GameTime gameTime);
 
     // пока неясно как надо ли использовать Mechanics целиком
@@ -14,8 +15,9 @@ public abstract class Affector : GameComponent
 
     public override void Update(GameTime gameTime)
     {
-        _velocity = new Vector2();
+        _velocity = Vector2.Zero;
         UpdateVelocity(gameTime);
+        _mechanics.Velocity += _velocity;
 
         base.Update(gameTime);
     }

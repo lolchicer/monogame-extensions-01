@@ -13,7 +13,9 @@ public class Input : Affector
         Right
     }
 
-    private const float _speed = 2;
+    private const float _speed = 0.5f;
+
+    private MechanicsVelocityPoller _mechanicsVelocityPoller;
 
     private void Accelerate(Direction direction)
     {
@@ -34,15 +36,15 @@ public class Input : Affector
             default:
                 break;
         }
-        
-        if (_mechanics.Velocity.Length() > _speed)
+
+        /* if (_mechanicsVelocityPoller.Velocity != Vector2.Zero)
             // крутой аирконтроль чел
             _velocity = new();
         else
-        {
+        { */
             _velocity.Normalize();
-            _velocity *= _speed - _mechanics.Velocity.Length();
-        }
+            _velocity *= _speed;
+        // }
     }
 
     private void Accelerate(IEnumerable<Direction> directions)
@@ -55,9 +57,13 @@ public class Input : Affector
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
+        _velocity = Vector2.Zero;
         Accelerate(Directions);
         Directions.Clear();
     }
 
-    public Input(Mechanics mechanics) : base(mechanics) { }
+    public Input(MechanicsVelocityPoller mechanicsVelocityPoller, Mechanics mechanics) : base(mechanics)
+    {
+        _mechanicsVelocityPoller = mechanicsVelocityPoller;
+    }
 }
