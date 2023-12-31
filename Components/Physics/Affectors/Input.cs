@@ -37,14 +37,14 @@ public class Input : Affector
                 break;
         }
 
-        /* if (_mechanicsVelocityPoller.Velocity != Vector2.Zero)
+        if (_mechanicsVelocityPoller.Velocity != Vector2.Zero)
             // крутой аирконтроль чел
             _velocity = new();
         else
-        { */
+        {
             _velocity.Normalize();
             _velocity *= _speed;
-        // }
+        }
     }
 
     private void Accelerate(IEnumerable<Direction> directions)
