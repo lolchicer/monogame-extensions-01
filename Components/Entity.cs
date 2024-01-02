@@ -24,7 +24,7 @@ public abstract class Entity : DrawableGameComponent
     private MechanicsVelocityPoller _mechanicsVelocityPoller;
     private MechanicsPositionPoller _mechanicsPositionPoller;
     private Input _input;
-    private IEnumerable<Affector> _affectors;
+    private IList<Affector> _affectors;
     private Level _level;
 
     // _
@@ -68,7 +68,7 @@ public abstract class Entity : DrawableGameComponent
         _mechanicsVelocityPoller.Update(gameTime);
         _mechanicsPositionPoller.Update(gameTime);
 
-        foreach (var affector in _affectors)
+        foreach (var affector in _affectors.ToArray())
             affector.Update(gameTime);
         Mechanics.Update(gameTime);
 
@@ -119,12 +119,11 @@ public abstract class Entity : DrawableGameComponent
         _input = new Input(_mechanicsVelocityPoller, mechanics);
 
         Mechanics = mechanics;
-        _affectors = new Affector[] {
-            new Friction(_mechanicsVelocityPoller, Mechanics),
-            // new Test(mechanics),
+        _affectors = new List<Affector>();
+        _affectors.Add(new Friction(_mechanicsVelocityPoller, mechanics, _affectors));
+        _affectors.Add(_input);
+        // _affectors.Add(new Test(mechanics));
             // new Collision(Mechanics, _mechanicsVelocityPoller, _mechanicsPositionPoller, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 }),
-            _input
-        };
     }
 
     // побочные эффекты для Player

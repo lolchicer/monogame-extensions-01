@@ -6,55 +6,35 @@ namespace MonogameTest01;
 
 public class Friction : Affector
 {
-    private const float _speed = 3;
+    private const float _speed = 3.0f;
     // возможно лишнее свойство
-    private Vector2 StartVelocity
-    {
-        get
-        {
-            var linkingsVelocitiesSum = _mechanicsVelocityPoller.Velocity;
-            foreach (var linking in _affectingLinkings)
-                linkingsVelocitiesSum += linking.LinkVelocity;
-            return linkingsVelocitiesSum;
-        }
-    }
+    private Vector2 StartVelocity => _mechanicsVelocityPoller.Velocity + _linkingFactory.LinkVelocity;
     private MechanicsVelocityPoller _mechanicsVelocityPoller;
     private LinkingFactory _linkingFactory;
-    private List<Linking> _linkings = new();
-    private List<Linking> _affectingLinkings = new();
 
     private void Compensate()
     {
-        _linkings.Add(_linkingFactory.New(-(_velocity + StartVelocity)));
+        _linkingFactory.AddNew(-(_velocity + StartVelocity));
     }
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
-        foreach (var linking in _linkings.ToArray())
+        if (_mechanics.Velocity != Vector2.Zero)
         {
-            linking.Update(gameTime);
-            _linkings.Remove(linking);
-            _affectingLinkings.Add(linking);
-        }
-
-        if (StartVelocity != Vector2.Zero)
-        {
-            var normalizedVelocity = StartVelocity;
+            var normalizedVelocity = _mechanics.Velocity;
             normalizedVelocity.Normalize();
             _velocity = (-normalizedVelocity) * _speed;
 
             if (StartVelocity.Length() - _speed <= 0)
                 Compensate();
         }
-
-        _affectingLinkings.Clear();
     }
 
-    public Friction(MechanicsVelocityPoller mechanicsVelocityPoller, Mechanics mechanics) : base(mechanics)
+    public Friction(MechanicsVelocityPoller mechanicsVelocityPoller, Mechanics mechanics, IList<Affector> manager) : base(mechanics)
     {
         // и каким образом _mechanics тут сокрыто
         // короче моногейм моументс
         _mechanicsVelocityPoller = mechanicsVelocityPoller;
-        _linkingFactory = new(mechanics);
+        _linkingFactory = new(mechanics, manager);
     }
 }

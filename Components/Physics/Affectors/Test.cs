@@ -10,11 +10,9 @@ public class Test : Affector
     {
         if (_a)
         {
-            _velocity = new() { X = 2.0f, Y = 0 };
+            _velocity = new() { X = 6.0f, Y = 0 };
             _a = false;
         }
-        else
-            _velocity = Vector2.Zero;
     }
 
     public Test(Mechanics mechanics) : base(mechanics) { }
