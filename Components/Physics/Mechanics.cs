@@ -14,5 +14,7 @@ public class Mechanics : GameComponent
         base.Update(gameTime);
     }
 
+    public GameTime GameTime(Vector2 distance);
+
     public Mechanics(Game game) : base(game) { }
 }
