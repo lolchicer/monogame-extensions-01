@@ -4,17 +4,16 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Friction : Affector
+public class Friction : FirstAffector
 {
     private const float _speed = 3.0f;
     // возможно лишнее свойство
-    private Vector2 StartVelocity => _mechanicsVelocityPoller.Velocity + _linkingFactory.LinkVelocity;
+    private Vector2 StartVelocity => _mechanicsVelocityPoller.Velocity;
     private MechanicsVelocityPoller _mechanicsVelocityPoller;
-    private LinkingFactory _linkingFactory;
 
     private void Compensate()
     {
-        _linkingFactory.AddNew(-(_velocity + StartVelocity));
+        _mechanicsVelocityPoller.Velocity.AddNew(-(_velocity + StartVelocity));
     }
 
     protected override void UpdateVelocity(GameTime gameTime)
@@ -30,11 +29,13 @@ public class Friction : Affector
         }
     }
 
+    // инстанц потребуется в дальнейшем
+    public Vector2 Limit => Vector2.Zero;
+
     public Friction(MechanicsVelocityPoller mechanicsVelocityPoller, Mechanics mechanics, IList<Affector> manager) : base(mechanics)
     {
         // и каким образом _mechanics тут сокрыто
         // короче моногейм моументс
         _mechanicsVelocityPoller = mechanicsVelocityPoller;
-        _linkingFactory = new(mechanics, manager);
     }
 }

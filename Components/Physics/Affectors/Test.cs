@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Test : Affector
+public class Test : FirstAffector
 {
     private bool _a = true;
 

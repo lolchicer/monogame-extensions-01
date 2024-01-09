@@ -23,6 +23,7 @@ public abstract class Entity : DrawableGameComponent
 
     private MechanicsVelocityPoller _mechanicsVelocityPoller;
     private MechanicsPositionPoller _mechanicsPositionPoller;
+    private AffectorsQueue _affectorsQueue;
     private Input _input;
     private IList<Affector> _affectors;
     private Level _level;
@@ -65,11 +66,10 @@ public abstract class Entity : DrawableGameComponent
 
     public override void Update(GameTime gameTime)
     {
-        _mechanicsVelocityPoller.Update(gameTime);
         _mechanicsPositionPoller.Update(gameTime);
 
-        foreach (var affector in _affectors.ToArray())
-            affector.Update(gameTime);
+        _affectorsQueue.Update(gameTime);
+
         Mechanics.Update(gameTime);
 
         base.Update(gameTime);
@@ -124,6 +124,8 @@ public abstract class Entity : DrawableGameComponent
         _affectors.Add(_input);
         // _affectors.Add(new Test(mechanics));
             // new Collision(Mechanics, _mechanicsVelocityPoller, _mechanicsPositionPoller, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 }),
+
+        _affectorsQueue = new AffectorsQueue(_affectors, _mechanicsVelocityPoller);
     }
 
     // побочные эффекты для Player

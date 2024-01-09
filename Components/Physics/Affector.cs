@@ -5,10 +5,12 @@ namespace MonogameTest01;
 public abstract class Affector : GameComponent
 {
     protected Mechanics _mechanics;
-    
+
     protected Vector2 _velocity;
-    
+
     protected abstract void UpdateVelocity(GameTime gameTime);
+
+    public abstract AffectorsQueue.Position QueuePosition { get; }
 
     // пока неясно как надо ли использовать Mechanics целиком
     public Vector2 Velocity => _velocity;

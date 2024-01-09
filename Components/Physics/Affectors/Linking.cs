@@ -1,47 +1,35 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Linking : Affector
+public abstract class Linking : ThirdAffector
 {
-    private Vector2 _linkVelocity;
-    private LinkingFactory _linkingFactory;
-    private const int _initialDelay = 2;
-    private int _delay = _initialDelay;
+    private IEnumerable<LinkingComponent> _components;
+    private Vector2 _maxVelocity;
 
-    private void Accelerate()
+    public Vector2 MaxVelocity
     {
-        _velocity = _linkVelocity * _initialDelay;
+        set
+        {
+            if (Math.Abs(value.X) > Math.Abs(_maxVelocity.X))
+                _maxVelocity.X = value.X;
+            if (Math.Abs(value.Y) > Math.Abs(_maxVelocity.Y))
+                _maxVelocity.Y = value.Y;
+        }
     }
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
-        switch (_delay)
-        {
-            case > 1:
-                _delay--;
-                break;
-            case 1:
-                _delay--;
-                Accelerate();
-                break;
-            case 0:
-                Accelerate();
-                _velocity = -_velocity;
-                _linkingFactory.Remove(this);
-                break;
-            default:
-                break;
-        }
+        foreach (var component in _components)
+            component.Update(gameTime);
+        _velocity = _maxVelocity;
     }
 
-    public Vector2 LinkVelocity => _linkVelocity;
-
-    public Linking(Vector2 velocity, Mechanics mechanics, LinkingFactory linkingFactory)
+    public Linking(Mechanics mechanics, IEnumerable<LinkingComponent> components)
     : base(mechanics)
     {
-        _linkVelocity = velocity;
-        _linkingFactory = linkingFactory;
+        _components = components;
     }
 }

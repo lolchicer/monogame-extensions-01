@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Collision : Affector
+public class Collision : LinkingComponent
 {
     private MechanicsVelocityPoller _mechanicsVelocityPoller;
     private MechanicsPositionPoller _mechanicsPositionPoller;
@@ -22,7 +22,7 @@ public class Collision : Affector
     }
 
     // конструктор с побочными эффектами
-    public Collision(Mechanics mechanics, MechanicsVelocityPoller mechanicsVelocityPoller, MechanicsPositionPoller mechanicsPositionPoller, CollisionMeta meta, Vector2 boxSize) : base(mechanics)
+    public Collision(Mechanics mechanics, MechanicsVelocityPoller mechanicsVelocityPoller, MechanicsPositionPoller mechanicsPositionPoller, CollisionMeta meta, Vector2 boxSize) : base(mechanics.Game)
     {
         meta.Collisions.Add(this);
 
