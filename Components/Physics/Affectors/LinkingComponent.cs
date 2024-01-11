@@ -8,17 +8,24 @@ public abstract class LinkingComponent : GameComponent
     protected Vector2 _velocity;
     
     private readonly Linking _linking;
+    private readonly ILinkingAffector _affector;
+    private readonly Mechanics _mechanics;
 
-    protected abstract void UpdateVelocity(GameTime gameTime);
+    public Vector2 Velocity => _velocity;
 
     public override void Update(GameTime gameTime)
     {
-        _linking.MaxVelocity = _velocity;
+        _mechanics.Velocity += _affector.LinkVelocity;
     }
 
-    public LinkingComponent(Linking linking, Game game)
-    : base(game)
+    public bool Triggered() =>
+    _affector.Linking();
+
+    public LinkingComponent(Linking linking, ILinkingAffector affector, Mechanics mechanics)
+    : base(mechanics.Game)
     {
         _linking = linking;
+        _affector = affector;
+        _mechanics = mechanics;
     }
 }

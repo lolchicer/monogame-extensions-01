@@ -4,20 +4,22 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Friction : FirstAffector
+public class Friction : FirstAffector, ILinkingAffector
 {
     private const float _speed = 3.0f;
+    private bool _linking = false;
     // возможно лишнее свойство
     private Vector2 StartVelocity => _mechanicsVelocityPoller.Velocity;
     private MechanicsVelocityPoller _mechanicsVelocityPoller;
 
     private void Compensate()
     {
-        _mechanicsVelocityPoller.Velocity.AddNew(-(_velocity + StartVelocity));
+        _linking = true;
     }
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
+        _linking = false;
         if (_mechanics.Velocity != Vector2.Zero)
         {
             var normalizedVelocity = _mechanics.Velocity;
@@ -28,6 +30,8 @@ public class Friction : FirstAffector
                 Compensate();
         }
     }
+
+    public bool Linking => _linking; 
 
     // инстанц потребуется в дальнейшем
     public Vector2 Limit => Vector2.Zero;

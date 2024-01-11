@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
@@ -7,24 +8,39 @@ namespace MonogameTest01;
 public abstract class Linking : ThirdAffector
 {
     private IEnumerable<LinkingComponent> _components;
-    private Vector2 _maxVelocity;
 
-    public Vector2 MaxVelocity
-    {
-        set
-        {
-            if (Math.Abs(value.X) > Math.Abs(_maxVelocity.X))
-                _maxVelocity.X = value.X;
-            if (Math.Abs(value.Y) > Math.Abs(_maxVelocity.Y))
-                _maxVelocity.Y = value.Y;
-        }
-    }
+    private IList<LinkingComponent> Triggered() =>
+    new List<LinkingComponent>(
+        from linker in _components
+        where linker.Triggered()
+        select linker);
+
+    private bool Unlinked() =>
+    Triggered().Count > 0;
+
+    private LinkingComponent First() =>
+    Triggered().First(
+        linker1 =>
+        linker1.Velocity.Length() ==
+        (
+            from linker2 in Triggered()
+            select linker2.Velocity.Length())
+            .Max());
+
+    private void UpdateLocalVelocity(LinkingComponent component, GameTime gameTime)
+    => _velocity += component.Velocity;
+
+    private void UpdateComponent(LinkingComponent component, GameTime gameTime)
+    => component.Update(gameTime);
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
-        foreach (var component in _components)
-            component.Update(gameTime);
-        _velocity = _maxVelocity;
+        while (Unlinked())
+        {
+            var first = First();
+            UpdateComponent(first, gameTime);
+            UpdateLocalVelocity(first, gameTime);
+        }
     }
 
     public Linking(Mechanics mechanics, IEnumerable<LinkingComponent> components)
