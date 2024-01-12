@@ -4,6 +4,6 @@ namespace MonogameTest01;
 
 public interface ILinkingAffector
 {
-    public bool Linking();
-    public Vector2 LinkVelocity { get; }
+    public bool Linking { get;}
+    public Vector2 DestinatedVelocity { get; }
 }

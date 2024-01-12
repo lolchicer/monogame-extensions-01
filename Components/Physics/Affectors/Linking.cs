@@ -27,19 +27,15 @@ public abstract class Linking : ThirdAffector
             select linker2.Velocity.Length())
             .Max());
 
-    private void UpdateLocalVelocity(LinkingComponent component, GameTime gameTime)
+    private void UpdateVelocity(LinkingComponent component, GameTime gameTime)
     => _velocity += component.Velocity;
-
-    private void UpdateComponent(LinkingComponent component, GameTime gameTime)
-    => component.Update(gameTime);
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
         while (Unlinked())
         {
             var first = First();
-            UpdateComponent(first, gameTime);
-            UpdateLocalVelocity(first, gameTime);
+            UpdateVelocity(first, gameTime);
         }
     }
 

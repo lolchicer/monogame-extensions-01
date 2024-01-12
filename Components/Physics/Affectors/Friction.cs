@@ -31,7 +31,18 @@ public class Friction : FirstAffector, ILinkingAffector
         }
     }
 
-    public bool Linking => _linking; 
+    public bool Linking
+    {
+        get
+        {
+            var initialDifference = _mechanicsVelocityPoller.Velocity - _velocity - DestinatedVelocity;
+            var currentDifference = _mechanicsVelocityPoller.Velocity - DestinatedVelocity;
+            initialDifference.Normalize();
+            currentDifference.Normalize();
+            return currentDifference == -initialDifference;
+        }
+    }
+    public Vector2 DestinatedVelocity => Vector2.Zero;
 
     // инстанц потребуется в дальнейшем
     public Vector2 Limit => Vector2.Zero;
