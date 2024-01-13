@@ -7,28 +7,31 @@ namespace MonogameTest01;
 
 public abstract class Linking : ThirdAffector
 {
-    private IEnumerable<LinkingComponent> _components;
+    private Vector2 ComponentVelocity(ILinkingComponent component)
+    => component.DestinatedVelocity - Velocity;
 
-    private IList<LinkingComponent> Triggered() =>
-    new List<LinkingComponent>(
+    private IEnumerable<ILinkingComponent> _components;
+
+    private IList<ILinkingComponent> Triggered() =>
+    new List<ILinkingComponent>(
         from linker in _components
-        where linker.Triggered()
+        where linker.Linking
         select linker);
+
+    private ILinkingComponent First() =>
+    Triggered().First(
+        linker1 =>
+        ComponentVelocity(linker1).Length() ==
+        (
+            from linker2 in Triggered()
+            select ComponentVelocity(linker2).Length())
+            .Max());
+
+    private void UpdateVelocity(ILinkingComponent component, GameTime gameTime)
+    => _velocity += ComponentVelocity(component);
 
     private bool Unlinked() =>
     Triggered().Count > 0;
-
-    private LinkingComponent First() =>
-    Triggered().First(
-        linker1 =>
-        linker1.Velocity.Length() ==
-        (
-            from linker2 in Triggered()
-            select linker2.Velocity.Length())
-            .Max());
-
-    private void UpdateVelocity(LinkingComponent component, GameTime gameTime)
-    => _velocity += component.Velocity;
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
@@ -39,7 +42,7 @@ public abstract class Linking : ThirdAffector
         }
     }
 
-    public Linking(Mechanics mechanics, IEnumerable<LinkingComponent> components)
+    public Linking(Mechanics mechanics, IEnumerable<ILinkingComponent> components)
     : base(mechanics)
     {
         _components = components;

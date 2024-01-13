@@ -2,8 +2,8 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public interface ILinkingAffector
+public interface ILinkingComponent
 {
-    public bool Linking { get;}
     public Vector2 DestinatedVelocity { get; }
+    public bool Linking { get; }
 }
