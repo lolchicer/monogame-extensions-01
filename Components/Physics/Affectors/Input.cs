@@ -40,11 +40,6 @@ public class Input : SecondAffector
         if (_mechanicsVelocityPoller.Velocity != Vector2.Zero)
             // крутой аирконтроль чел
             _velocity = new();
-        else
-        {
-            _velocity.Normalize();
-            _velocity *= _speed;
-        }
     }
 
     private void Accelerate(IEnumerable<Direction> directions)
@@ -59,6 +54,11 @@ public class Input : SecondAffector
     {
         _velocity = Vector2.Zero;
         Accelerate(Directions);
+        if (_velocity != Vector2.Zero)
+        {
+            _velocity.Normalize();
+            _velocity *= _speed;
+        }
         Directions.Clear();
     }
 

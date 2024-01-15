@@ -13,29 +13,28 @@ public class Friction : FirstAffector, ILinkingComponent
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
-        if (_mechanics.Velocity != Vector2.Zero)
+        if (StartVelocity != Vector2.Zero)
         {
-            var normalizedVelocity = _mechanics.Velocity;
+            var normalizedVelocity = StartVelocity;
             normalizedVelocity.Normalize();
             _velocity = (-normalizedVelocity) * _speed;
         }
     }
 
-    public bool Linking
+    public bool Linking(Vector2 linkingVelocity)
     {
-        get
-        {
-            var initialDifference = _mechanicsVelocityPoller.Velocity - _velocity - DestinatedVelocity;
-            var currentDifference = _mechanicsVelocityPoller.Velocity - DestinatedVelocity;
-            initialDifference.Normalize();
-            currentDifference.Normalize();
-            return currentDifference == -initialDifference;
-        }
+        var initialDifference = _mechanicsVelocityPoller.Velocity - _velocity - DestinatedVelocity;
+        var currentDifference = _mechanicsVelocityPoller.Velocity + linkingVelocity - DestinatedVelocity;
+        initialDifference.Normalize();
+        currentDifference.Normalize();
+        return currentDifference == -initialDifference;
     }
     // инстанц потребуется в дальнейшем
     public Vector2 DestinatedVelocity => Vector2.Zero;
+    // прапрекрывапр
+    public new Vector2 Velocity => _velocity;
 
-    public Friction(MechanicsVelocityPoller mechanicsVelocityPoller, Mechanics mechanics, IList<Affector> manager) : base(mechanics)
+    public Friction(MechanicsVelocityPoller mechanicsVelocityPoller, Mechanics mechanics) : base(mechanics)
     {
         // и каким образом _mechanics тут сокрыто
         // короче моногейм моументс

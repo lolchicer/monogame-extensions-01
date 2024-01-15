@@ -117,11 +117,15 @@ public abstract class Entity : DrawableGameComponent
         _mechanicsPositionPoller = new MechanicsPositionPoller(mechanics);
 
         _input = new Input(_mechanicsVelocityPoller, mechanics);
+        var friction = new Friction(_mechanicsVelocityPoller, mechanics);
 
         Mechanics = mechanics;
-        _affectors = new List<Affector>();
-        _affectors.Add(new Friction(_mechanicsVelocityPoller, mechanics, _affectors));
-        _affectors.Add(_input);
+        _affectors = new List<Affector>
+        {
+            friction,
+            _input,
+            new Linking(_mechanicsVelocityPoller, mechanics, new[] { friction })
+        };
         // _affectors.Add(new Test(mechanics));
             // new Collision(Mechanics, _mechanicsVelocityPoller, _mechanicsPositionPoller, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 }),
 

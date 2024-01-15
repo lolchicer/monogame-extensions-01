@@ -5,30 +5,28 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public abstract class Linking : ThirdAffector
+public class Linking : ThirdAffector
 {
-    private Vector2 ComponentVelocity(ILinkingComponent component)
-    => component.DestinatedVelocity - Velocity;
-
     private IEnumerable<ILinkingComponent> _components;
+    private MechanicsVelocityPoller _velocityPoller;
 
     private IList<ILinkingComponent> Triggered() =>
     new List<ILinkingComponent>(
         from linker in _components
-        where linker.Linking
+        where linker.Linking(_velocity)
         select linker);
 
     private ILinkingComponent First() =>
     Triggered().First(
         linker1 =>
-        ComponentVelocity(linker1).Length() ==
+        linker1.DestinatedVelocity.Length() ==
         (
             from linker2 in Triggered()
-            select ComponentVelocity(linker2).Length())
+            select linker2.DestinatedVelocity.Length())
             .Max());
 
     private void UpdateVelocity(ILinkingComponent component, GameTime gameTime)
-    => _velocity += ComponentVelocity(component);
+    => _velocity += component.DestinatedVelocity - _velocityPoller.Velocity;
 
     private bool Unlinked() =>
     Triggered().Count > 0;
@@ -42,9 +40,10 @@ public abstract class Linking : ThirdAffector
         }
     }
 
-    public Linking(Mechanics mechanics, IEnumerable<ILinkingComponent> components)
+    public Linking(MechanicsVelocityPoller velocityPoller, Mechanics mechanics, IEnumerable<ILinkingComponent> components)
     : base(mechanics)
     {
         _components = components;
+        _velocityPoller = velocityPoller;
     }
 }

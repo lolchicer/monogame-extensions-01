@@ -4,7 +4,7 @@ namespace MonogameTest01;
 
 public abstract class Affector : GameComponent
 {
-    protected Mechanics _mechanics;
+    private Mechanics _mechanics;
 
     protected Vector2 _velocity;
 

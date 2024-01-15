@@ -31,10 +31,10 @@ public class AffectorsQueue
                     _value.First.Add(affector);
                     break;
                 case Position.Second:
-                    _value.First.Add(affector);
+                    _value.Second.Add(affector);
                     break;
                 case Position.Third:
-                    _value.First.Add(affector);
+                    _value.Third.Add(affector);
                     break;
                 default:
                     break;

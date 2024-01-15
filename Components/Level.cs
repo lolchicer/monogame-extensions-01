@@ -6,7 +6,6 @@ namespace MonogameTest01;
 public class Level : DrawableGameComponent
 {
     private Player _player;
-    public CollisionMeta CollisionMeta { get; } = new();
     public List<Entity> Entities { get; } = new();
 
     public override void Update(GameTime gameTime)
