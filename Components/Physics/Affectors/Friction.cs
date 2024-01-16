@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -23,11 +24,19 @@ public class Friction : FirstAffector, ILinkingComponent
 
     public bool Linking(Vector2 linkingVelocity)
     {
-        var initialDifference = _mechanicsVelocityPoller.Velocity - _velocity - DestinatedVelocity;
+        var initialDifference = -(_mechanicsVelocityPoller.Velocity - _velocity - DestinatedVelocity);
         var currentDifference = _mechanicsVelocityPoller.Velocity + linkingVelocity - DestinatedVelocity;
-        initialDifference.Normalize();
-        currentDifference.Normalize();
-        return currentDifference == -initialDifference;
+        if (initialDifference == Vector2.Zero || currentDifference == Vector2.Zero)
+            return false;
+        else
+        {
+            initialDifference.Normalize();
+            currentDifference.Normalize();
+            // рпавгонеквопра
+            var initialDifferenceRounded = new Vector2(Math.Sign(initialDifference.X), Math.Sign(initialDifference.Y));
+            var currentDifferenceRounded = new Vector2(Math.Sign(currentDifference.X), Math.Sign(currentDifference.Y));
+            return currentDifferenceRounded == initialDifferenceRounded;
+        }
     }
     // инстанц потребуется в дальнейшем
     public Vector2 DestinatedVelocity => Vector2.Zero;

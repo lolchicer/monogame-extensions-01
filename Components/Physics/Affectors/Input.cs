@@ -36,10 +36,6 @@ public class Input : SecondAffector
             default:
                 break;
         }
-
-        if (_mechanicsVelocityPoller.Velocity != Vector2.Zero)
-            // крутой аирконтроль чел
-            _velocity = new();
     }
 
     private void Accelerate(IEnumerable<Direction> directions)
@@ -53,11 +49,15 @@ public class Input : SecondAffector
     protected override void UpdateVelocity(GameTime gameTime)
     {
         _velocity = Vector2.Zero;
-        Accelerate(Directions);
-        if (_velocity != Vector2.Zero)
+        // крутой аирконтроль чел
+        if (_mechanicsVelocityPoller.Velocity == Vector2.Zero)
         {
-            _velocity.Normalize();
-            _velocity *= _speed;
+            Accelerate(Directions);
+            if (_velocity != Vector2.Zero)
+            {
+                _velocity.Normalize();
+                _velocity *= _speed;
+            }
         }
         Directions.Clear();
     }

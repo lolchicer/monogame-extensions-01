@@ -10,6 +10,7 @@ public class Level : DrawableGameComponent
 
     public override void Update(GameTime gameTime)
     {
+        _player.Update(gameTime);
         Entities.ForEach(entity => entity.Update(gameTime));
 
         base.Update(gameTime);
@@ -22,7 +23,6 @@ public class Level : DrawableGameComponent
 
     public override void Draw(GameTime gameTime)
     {
-        _player.Update(gameTime);
         Entities.ForEach(entity => entity.Draw(gameTime));
 
         base.Draw(gameTime);
