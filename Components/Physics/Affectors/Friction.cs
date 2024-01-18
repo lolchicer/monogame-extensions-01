@@ -7,7 +7,7 @@ namespace MonogameTest01;
 
 public class Friction : FirstAffector, ILinkingComponent
 {
-    private const float _speed = 3.0f;
+    private const float _speed = 2.0f;
     // возможно лишнее свойство
     private Vector2 StartVelocity => _mechanicsVelocityPoller.Velocity;
     private MechanicsVelocityPoller _mechanicsVelocityPoller;
@@ -24,19 +24,9 @@ public class Friction : FirstAffector, ILinkingComponent
 
     public bool Linking(Vector2 linkingVelocity)
     {
-        var initialDifference = -(_mechanicsVelocityPoller.Velocity - _velocity - DestinatedVelocity);
-        var currentDifference = _mechanicsVelocityPoller.Velocity + linkingVelocity - DestinatedVelocity;
-        if (initialDifference == Vector2.Zero || currentDifference == Vector2.Zero)
-            return false;
-        else
-        {
-            initialDifference.Normalize();
-            currentDifference.Normalize();
-            // рпавгонеквопра
-            var initialDifferenceRounded = new Vector2(Math.Sign(initialDifference.X), Math.Sign(initialDifference.Y));
-            var currentDifferenceRounded = new Vector2(Math.Sign(currentDifference.X), Math.Sign(currentDifference.Y));
-            return currentDifferenceRounded == initialDifferenceRounded;
-        }
+        var initialDifference = (StartVelocity - _velocity - DestinatedVelocity).Length();
+        var currentDifference = (StartVelocity + linkingVelocity - DestinatedVelocity).Length();
+        return currentDifference > initialDifference;
     }
     // инстанц потребуется в дальнейшем
     public Vector2 DestinatedVelocity => Vector2.Zero;
