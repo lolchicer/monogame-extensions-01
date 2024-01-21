@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Linking : ThirdAffector
+public class Linking : SecondAffector
 {
     private IEnumerable<ILinkingComponent> _components;
     private MechanicsVelocityPoller _velocityPoller;

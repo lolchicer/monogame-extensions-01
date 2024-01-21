@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Friction : SecondAffector, ILinkingComponent
+public class Friction : FirstAffector, ILinkingComponent
 {
     private const float _speed = 3.0f;
     // возможно лишнее свойство
