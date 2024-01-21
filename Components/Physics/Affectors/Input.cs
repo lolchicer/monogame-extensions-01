@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MonogameTest01;
 
-public class Input : SecondAffector
+public class Input : ThirdAffector
 {
     public enum Direction
     {
@@ -13,7 +13,7 @@ public class Input : SecondAffector
         Right
     }
 
-    private const float _speed = 0.5f;
+    private const float _speed = 2.0f;
 
     private MechanicsVelocityPoller _mechanicsVelocityPoller;
 
