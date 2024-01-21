@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MonogameTest01;
 
-public class Input : ThirdAffector
+public class Input : SecondAffector
 {
     public enum Direction
     {
