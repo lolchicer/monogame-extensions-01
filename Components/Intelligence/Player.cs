@@ -15,12 +15,8 @@ public class Player : GameComponent
 
         var directions = new List<Input.Direction>();
 
-        if (keyboadrdState.IsKeyDown(Keys.W))
-            directions.Add(Input.Direction.Up);
         if (keyboadrdState.IsKeyDown(Keys.A))
             directions.Add(Input.Direction.Left);
-        if (keyboadrdState.IsKeyDown(Keys.S))
-            directions.Add(Input.Direction.Down);
         if (keyboadrdState.IsKeyDown(Keys.D))
             directions.Add(Input.Direction.Right);
 

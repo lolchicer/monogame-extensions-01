@@ -7,9 +7,7 @@ public class Input : SecondAffector
 {
     public enum Direction
     {
-        Up,
         Left,
-        Down,
         Right
     }
 
@@ -21,14 +19,8 @@ public class Input : SecondAffector
     {
         switch (direction)
         {
-            case Direction.Up:
-                _velocity += new Vector2 { X = 0, Y = -1 };
-                break;
             case Direction.Left:
                 _velocity += new Vector2 { X = -1, Y = 0 };
-                break;
-            case Direction.Down:
-                _velocity += new Vector2 { X = 0, Y = 1 };
                 break;
             case Direction.Right:
                 _velocity += new Vector2 { X = 1, Y = 0 };
