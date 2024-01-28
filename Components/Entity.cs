@@ -22,7 +22,6 @@ public abstract class Entity : DrawableGameComponent
     private SpriteDirection _spriteDirection = SpriteDirection.Right;
 
     private Input _input;
-    private IList<Affector> _affectors;
     private Level _level;
 
     // _
@@ -31,7 +30,7 @@ public abstract class Entity : DrawableGameComponent
         get
         {
             // я когда-нибудь получу по башне за поиск свойств в коллекциях
-            if (_affectors.First(affector => affector is Input).Velocity != new Vector2() { X = 0, Y = 0 })
+            if (_input.Velocity != new Vector2() { X = 0, Y = 0 })
                 return SpriteState.Walking;
             return SpriteState.Idle;
         }
@@ -42,7 +41,7 @@ public abstract class Entity : DrawableGameComponent
     {
         get
         {
-            var velocity = _affectors.First(affector => affector is Input).Velocity;
+            var velocity = _input.Velocity;
             if (velocity.X < 0)
                 _spriteDirection = SpriteDirection.Left;
             if (velocity.X > 0)
@@ -107,7 +106,6 @@ public abstract class Entity : DrawableGameComponent
         _level = level;
         
         Mechanics = new Mechanics(level.Game);
-        _affectors = Mechanics.Affectors;
 
         _input = new Input(Mechanics);
         var friction = new Friction(Mechanics);
