@@ -40,10 +40,10 @@ public class Linking : SecondAffector
         }
     }
 
-    public Linking(MechanicsVelocityPoller velocityPoller, Mechanics mechanics, IEnumerable<ILinkingComponent> components)
+    public Linking(IEnumerable<ILinkingComponent> components, Mechanics mechanics)
     : base(mechanics)
     {
         _components = components;
-        _velocityPoller = velocityPoller;
+        _velocityPoller = mechanics.VelocityPoller;
     }
 }

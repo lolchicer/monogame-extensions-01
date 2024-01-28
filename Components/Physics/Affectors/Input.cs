@@ -54,8 +54,8 @@ public class Input : ThirdAffector
         Directions.Clear();
     }
 
-    public Input(MechanicsVelocityPoller mechanicsVelocityPoller, Mechanics mechanics) : base(mechanics)
+    public Input(Mechanics mechanics) : base(mechanics)
     {
-        _mechanicsVelocityPoller = mechanicsVelocityPoller;
+        _mechanicsVelocityPoller = mechanics.VelocityPoller;
     }
 }

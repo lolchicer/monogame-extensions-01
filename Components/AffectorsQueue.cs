@@ -13,7 +13,8 @@ public class AffectorsQueue
         _value = new(new(), new(), new());
     private List<Affector>[] _valueSteps;
     private MechanicsVelocityPoller _velocityPoller;
-
+    private MechanicsPositionPoller _positionPoller;
+    
     public enum Position
     {
         First,
@@ -44,6 +45,7 @@ public class AffectorsQueue
     public void Update(GameTime gameTime)
     {
         Sort();
+        _positionPoller.Update(gameTime);
         foreach (var valueStep in _valueSteps)
         {
             foreach (var affector in valueStep)
@@ -59,7 +61,7 @@ public class AffectorsQueue
             valueStep.Clear();
     }
 
-    public AffectorsQueue(IEnumerable<Affector> affectors, MechanicsVelocityPoller velocityPoller)
+    public AffectorsQueue(IEnumerable<Affector> affectors, MechanicsPositionPoller positionPoller, MechanicsVelocityPoller velocityPoller)
     {
         _valueSteps = new[] {
             _value.First,
@@ -67,6 +69,7 @@ public class AffectorsQueue
             _value.Third };
         
         _affectors = affectors;
+        _positionPoller = positionPoller;
         _velocityPoller = velocityPoller;
     }
 }

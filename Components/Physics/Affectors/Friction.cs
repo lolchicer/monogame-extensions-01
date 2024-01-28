@@ -33,10 +33,10 @@ public class Friction : FirstAffector, ILinkingComponent
     // прапрекрывапр
     public new Vector2 Velocity => _velocity;
 
-    public Friction(MechanicsVelocityPoller mechanicsVelocityPoller, Mechanics mechanics) : base(mechanics)
+    public Friction(Mechanics mechanics) : base(mechanics)
     {
         // и каким образом _mechanics тут сокрыто
         // короче моногейм моументс
-        _mechanicsVelocityPoller = mechanicsVelocityPoller;
+        _mechanicsVelocityPoller = mechanics.VelocityPoller;
     }
 }

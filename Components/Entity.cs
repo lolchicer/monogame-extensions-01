@@ -21,9 +21,6 @@ public abstract class Entity : DrawableGameComponent
 
     private SpriteDirection _spriteDirection = SpriteDirection.Right;
 
-    private MechanicsVelocityPoller _mechanicsVelocityPoller;
-    private MechanicsPositionPoller _mechanicsPositionPoller;
-    private AffectorsQueue _affectorsQueue;
     private Input _input;
     private IList<Affector> _affectors;
     private Level _level;
@@ -66,10 +63,6 @@ public abstract class Entity : DrawableGameComponent
 
     public override void Update(GameTime gameTime)
     {
-        _mechanicsPositionPoller.Update(gameTime);
-
-        _affectorsQueue.Update(gameTime);
-
         Mechanics.Update(gameTime);
 
         base.Update(gameTime);
@@ -112,24 +105,20 @@ public abstract class Entity : DrawableGameComponent
     public Entity(Level level) : base(level.Game)
     {
         _level = level;
-        var mechanics = new Mechanics(level.Game);
-        _mechanicsVelocityPoller = new MechanicsVelocityPoller(mechanics);
-        _mechanicsPositionPoller = new MechanicsPositionPoller(mechanics);
+        
+        Mechanics = new Mechanics(level.Game);
 
-        _input = new Input(_mechanicsVelocityPoller, mechanics);
-        var friction = new Friction(_mechanicsVelocityPoller, mechanics);
+        _input = new Input(Mechanics);
+        var friction = new Friction(Mechanics);
 
-        Mechanics = mechanics;
-        _affectors = new List<Affector>
-        {
+        foreach (var affector in
+        new Affector[] {
             friction,
             _input,
-            new Linking(_mechanicsVelocityPoller, mechanics, new[] { friction })
-        };
+            new Linking(new[] { friction }, Mechanics)
+        }) Mechanics.Affectors.Add(affector);
         // _affectors.Add(new Test(mechanics));
             // new Collision(Mechanics, _mechanicsVelocityPoller, _mechanicsPositionPoller, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 }),
-
-        _affectorsQueue = new AffectorsQueue(_affectors, _mechanicsVelocityPoller);
     }
 
     // побочные эффекты для Player
