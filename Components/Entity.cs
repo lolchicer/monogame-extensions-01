@@ -107,6 +107,7 @@ public abstract class Entity : DrawableGameComponent
         _level = level;
         
         Mechanics = new Mechanics(level.Game);
+        _affectors = Mechanics.Affectors;
 
         _input = new Input(Mechanics);
         var friction = new Friction(Mechanics);

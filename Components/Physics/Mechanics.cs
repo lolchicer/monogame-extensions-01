@@ -27,9 +27,12 @@ public class Mechanics : GameComponent
 
     public Mechanics(Game game) : base(game)
     {
+        _positionPoller = new MechanicsPositionPoller(this);
+        _velocityPoller = new MechanicsVelocityPoller(this);
+
         _affectorsQueue = new(
             Affectors,
-            new MechanicsPositionPoller(this),
-            new MechanicsVelocityPoller(this));
+            _positionPoller,
+            _velocityPoller);
     }
 }
