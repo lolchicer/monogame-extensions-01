@@ -42,8 +42,7 @@ public abstract class Entity : DrawableGameComponent
         _input = new Input(Mechanics);
         var friction = new Friction(Mechanics);
 
-        foreach (var affector in
-        new Affector[] {
+        foreach (var affector in new Affector[] {
             friction,
             _input,
             new Linking(new[] { friction }, Mechanics)
