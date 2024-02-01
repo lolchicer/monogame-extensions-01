@@ -7,11 +7,14 @@ public class Level : DrawableGameComponent
 {
     private Player _player;
     public List<Entity> Entities { get; } = new();
+    public List<Projectile> Projectiles { get; } = new();
 
     public override void Update(GameTime gameTime)
     {
         _player.Update(gameTime);
         Entities.ForEach(entity => entity.Update(gameTime));
+        foreach (var projectile in Projectiles.ToArray())
+            projectile.Update(gameTime);
 
         base.Update(gameTime);
     }
