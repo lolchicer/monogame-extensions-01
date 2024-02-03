@@ -10,7 +10,7 @@ public abstract class Entity : DrawableGameComponent
     private Input _input;
     private Level _level;
 
-    protected Health Health { get; }
+    public Health Health { get; }
     public Spells Spells { get; }
 
     public EntityDrawer EntityDrawer { get; set; }
@@ -38,7 +38,7 @@ public abstract class Entity : DrawableGameComponent
         base.Draw(gameTime);
     }
 
-    public Entity(EntityDrawingConfig drawingConfig, Level level) : base(level.Game)
+    public Entity(EntityDrawingConfig drawingConfig, GlobalEvents globalEvents, Level level) : base(level.Game)
     {
         _level = level;
 
@@ -55,7 +55,7 @@ public abstract class Entity : DrawableGameComponent
         // _affectors.Add(new Test(mechanics));
         // new Collision(Mechanics, _mechanicsVelocityPoller, _mechanicsPositionPoller, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 }),
 
-        Health = new(Game);
+        Health = new(Game, globalEvents);
         Spells = new(Game);
 
         Spells.Value.Add(new Dropkick(level, this));
@@ -64,7 +64,7 @@ public abstract class Entity : DrawableGameComponent
     }
 
     // побочные эффекты для Player
-    public Entity(EntityDrawingConfig drawingConfig, Level level, Player player) : this(drawingConfig, level)
+    public Entity(EntityDrawingConfig drawingConfig, GlobalEvents globalEvents, Level level, Player player) : this(drawingConfig, globalEvents, level)
     {
         player.Inputs.Add(_input);
         player.SpellsCollections.Add(Spells);

@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -18,7 +19,9 @@ public class DropkickProjectile : Projectile
     new(_user.Position.ToPoint(), new(32, 96));
     public override void Action(GameTime gameTime)
     {
-        throw new System.NotImplementedException();
+        foreach (var entity in _level.Entities)
+            if (Hitbox.Contains(entity.Position))
+                entity.Health.Value--;
     }
 
     public DropkickProjectile(Entity user, Level level)
