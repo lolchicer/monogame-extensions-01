@@ -21,7 +21,11 @@ public class DropkickProjectile : Projectile
     {
         foreach (var entity in _level.Entities)
             if (Hitbox.Contains(entity.Position))
+            {
                 entity.Health.Value--;
+                entity.Effects.Value.Add(new Expose(_level.Game));
+            }
+                
     }
 
     public DropkickProjectile(Entity user, Level level)

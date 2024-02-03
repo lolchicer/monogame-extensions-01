@@ -12,6 +12,7 @@ public abstract class Entity : DrawableGameComponent
 
     public Health Health { get; }
     public Spells Spells { get; }
+    public Effects Effects { get; }
 
     public EntityDrawer EntityDrawer { get; set; }
     public Mechanics Mechanics { get; }
@@ -55,8 +56,9 @@ public abstract class Entity : DrawableGameComponent
         // _affectors.Add(new Test(mechanics));
         // new Collision(Mechanics, _mechanicsVelocityPoller, _mechanicsPositionPoller, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 }),
 
-        Health = new(Game, globalEvents);
+        Health = new(this, Game, globalEvents);
         Spells = new(Game);
+        Effects = new(Game);
 
         Spells.Value.Add(new Dropkick(level, this));
 
