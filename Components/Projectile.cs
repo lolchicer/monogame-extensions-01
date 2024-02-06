@@ -7,6 +7,7 @@ public abstract class Projectile : GameComponent
     protected Entity _user;
     protected Level _level;
     protected abstract bool Alive { get; }
+    public Entity User => _user;
     public abstract Rectangle Hitbox { get; }
     public abstract void Action(GameTime gameTime);
     public override void Update(GameTime gameTime)
@@ -15,6 +16,7 @@ public abstract class Projectile : GameComponent
             foreach (var entity in _level.Entities)
                 if (Hitbox.Contains(entity.Mechanics.Position) && entity != _user)
                     Action(gameTime);
+                else { }
         else
             _level.Projectiles.Remove(this);
 

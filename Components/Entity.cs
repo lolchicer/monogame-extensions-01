@@ -23,6 +23,7 @@ public abstract class Entity : DrawableGameComponent
         Mechanics.Update(gameTime);
         Health.Update(gameTime);
         Spells.Update(gameTime);
+        Effects.Update(gameTime);
 
         base.Update(gameTime);
     }
