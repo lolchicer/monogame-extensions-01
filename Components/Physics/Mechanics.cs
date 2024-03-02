@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
@@ -6,33 +7,30 @@ namespace MonogameTest01;
 public class Mechanics : GameComponent
 {
     private IList<Affector> _affectors = new List<Affector>();
-    private AffectorsQueue _affectorsQueue;
-    private MechanicsPositionPoller _positionPoller;
-    private MechanicsVelocityPoller _velocityPoller;
-
+    private IList<IQueued> _commands = new List<IQueued>();
+    private History _history;
+    
     public Vector2 Velocity { get; set; } = new() { X = 0, Y = 0 };
     public Vector2 Position { get; set; } = new() { X = 0, Y = 0 };
 
     public IList<Affector> Affectors => _affectors;
-    public MechanicsPositionPoller PositionPoller => _positionPoller;
-    public MechanicsVelocityPoller VelocityPoller => _velocityPoller;
+    public IList<IQueued> Commands => _commands;
 
     public override void Update(GameTime gameTime)
     {
-        _affectorsQueue.Update(gameTime);
-        Position += Velocity;
+        foreach (var affector in _affectors)
+            affector.Update(gameTime);
+
+        _history.Add(new Queue { Value = _commands.ToArray() });
+        _history.Add(new Move(this, Velocity));
+
+        _commands.Clear();
 
         base.Update(gameTime);
     }
 
-    public Mechanics(Game game) : base(game)
+    public Mechanics(History history) : base(history.Game)
     {
-        _positionPoller = new MechanicsPositionPoller(this);
-        _velocityPoller = new MechanicsVelocityPoller(this);
-
-        _affectorsQueue = new(
-            Affectors,
-            _positionPoller,
-            _velocityPoller);
+        _history = history;
     }
 }

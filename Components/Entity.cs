@@ -1,23 +1,24 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MonogameTest01;
 
 public abstract class Entity : DrawableGameComponent
 {
-    private Input _input;
     private Level _level;
+    private Input _input;
+    private EntityDrawer _drawer;
 
+    public Mechanics Mechanics { get; }
     public Health Health { get; }
     public Spells Spells { get; }
     public Effects Effects { get; }
 
-    public EntityDrawer EntityDrawer { get; set; }
-    public Mechanics Mechanics { get; }
+    public Input Input => _input;
     public Vector2 Position => Mechanics.Position;
-
+    
+    public EntityDrawer Drawer => _drawer;
+    public abstract EntityDrawingConfig DrawingConfig { get; }
+    
     public override void Update(GameTime gameTime)
     {
         Mechanics.Update(gameTime);
@@ -28,46 +29,41 @@ public abstract class Entity : DrawableGameComponent
         base.Update(gameTime);
     }
 
-    public override void Initialize()
-    {
-        base.Initialize();
-    }
-
     public override void Draw(GameTime gameTime)
     {
-        EntityDrawer.Draw(gameTime);
+        _drawer.Draw(gameTime);
 
         base.Draw(gameTime);
     }
 
-    public Entity(EntityDrawingConfig drawingConfig, Level level) : base(level.Game)
+    public Entity(Level level) : base(level.Game)
     {
         _level = level;
 
-        Mechanics = new Mechanics(level.Game);
+        Mechanics = new Mechanics(_level.History);
 
         _input = new Input(Mechanics);
-        var friction = new Friction(Mechanics);
+        var friction = new Friction(Mechanics, _level);
 
         foreach (var affector in new Affector[] {
-            friction,
             _input,
+            friction,
             new Linking(new[] { friction }, Mechanics)
         }) Mechanics.Affectors.Add(affector);
         // _affectors.Add(new Test(mechanics));
         // new Collision(Mechanics, _mechanicsVelocityPoller, _mechanicsPositionPoller, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 }),
 
-        Health = new(this, Game);
+        Health = new(this);
         Spells = new(Game);
         Effects = new(Game);
 
         Spells.Value.Add(new Dropkick(level, this));
 
-        EntityDrawer = new(drawingConfig, Mechanics.PositionPoller, _input, level.Game);
+        _drawer = new(this);
     }
 
     // побочные эффекты для Player
-    public Entity(EntityDrawingConfig drawingConfig, Level level, Player player) : this(drawingConfig, level)
+    public Entity(Level level, Player player) : this(level)
     {
         player.Inputs.Add(_input);
         player.SpellsCollections.Add(Spells);

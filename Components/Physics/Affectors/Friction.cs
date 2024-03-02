@@ -7,10 +7,11 @@ namespace MonogameTest01;
 
 public class Friction : FirstAffector, ILinkingComponent
 {
-    private const float _speed = 3.0f;
+    private const float _speed = 2.0f;
     // возможно лишнее свойство
-    private Vector2 StartVelocity => _mechanicsVelocityPoller.Velocity;
-    private MechanicsVelocityPoller _mechanicsVelocityPoller;
+    private Mechanics _mechanics;
+    private Vector2 _linkingComponentVelocity;
+    private Vector2 StartVelocity => _mechanics.Velocity;
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
@@ -19,24 +20,19 @@ public class Friction : FirstAffector, ILinkingComponent
             var normalizedVelocity = StartVelocity;
             normalizedVelocity.Normalize();
             _velocity = (-normalizedVelocity) * _speed;
+            _linkingComponentVelocity = _velocity;
         }
-    }
-
-    public bool Linking(Vector2 linkingVelocity)
-    {
-        var initialDifference = (StartVelocity - _velocity - DestinatedVelocity).Length();
-        var currentDifference = (linkingVelocity + _velocity - DestinatedVelocity).Length();
-        return currentDifference > initialDifference;
     }
     // инстанц потребуется в дальнейшем
     public Vector2 DestinatedVelocity => Vector2.Zero;
     // прапрекрывапр
-    public new Vector2 Velocity => _velocity;
+    public Vector2 Velocity => _linkingComponentVelocity;
 
-    public Friction(Mechanics mechanics) : base(mechanics)
+    public Friction(Mechanics mechanics, Level level) : base(mechanics)
     {
         // и каким образом _mechanics тут сокрыто
         // короче моногейм моументс
-        _mechanicsVelocityPoller = mechanics.VelocityPoller;
+        _mechanics = mechanics;
+        _linkingComponentVelocity = _velocity;
     }
 }
