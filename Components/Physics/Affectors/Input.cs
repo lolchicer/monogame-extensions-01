@@ -12,8 +12,7 @@ public class Input : ThirdAffector
     }
 
     private const float _speed = 2.0f;
-
-    private MechanicsVelocityPoller _mechanicsVelocityPoller;
+    private Mechanics _mechanics;
 
     private void Accelerate(Direction direction)
     {
@@ -37,12 +36,13 @@ public class Input : ThirdAffector
     }
 
     public List<Direction> Directions { get; } = new();
+    public Vector2 Velocity => _velocity;
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
         _velocity = Vector2.Zero;
         // крутой аирконтроль чел
-        if (_mechanicsVelocityPoller.Velocity == Vector2.Zero)
+        if (_mechanics.Velocity == Vector2.Zero)
         {
             Accelerate(Directions);
             if (_velocity != Vector2.Zero)
@@ -54,8 +54,9 @@ public class Input : ThirdAffector
         Directions.Clear();
     }
 
-    public Input(Mechanics mechanics) : base(mechanics)
+    public Input(Mechanics mechanics)
+    : base(mechanics)
     {
-        _mechanicsVelocityPoller = mechanics.VelocityPoller;
+        _mechanics = mechanics;
     }
 }

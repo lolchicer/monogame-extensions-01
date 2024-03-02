@@ -6,11 +6,12 @@ namespace MonogameTest01;
 
 public class Player : GameComponent
 {
+    private History _history;
+
     public List<Input> Inputs { get; } = new();
     public List<Spells> SpellsCollections { get; } = new();
 
-    // стоит ли писать мне в этом названии Input 🤔
-    private void SetDirections()
+    private void SetDirections(Input value)
     {
         var keyboadrdState = Keyboard.GetState();
 
@@ -21,19 +22,26 @@ public class Player : GameComponent
         if (keyboadrdState.IsKeyDown(Keys.D))
             directions.Add(Input.Direction.Right);
 
-        Inputs.ForEach(input => input.Directions.AddRange(directions));
+        value.Directions.AddRange(directions);
     }
 
-    private void SetActivated(Spells spells)
+    // стоит ли писать мне в этом названии Input 🤔
+    private void SetDirections()
+    {
+        foreach (var input in Inputs)
+            SetDirections(input);
+    }
+
+    private void SetActivated(Spells value)
     {
         var keyboadrdState = Keyboard.GetState();
 
         var activated = new List<Spell>();
-        foreach (var spell in spells.Value)
-            if (keyboadrdState.IsKeyDown(spell.Key))
-                activated.Add(spell);
-        
-        spells.Activated = activated;
+        foreach (var item in value.Value)
+            if (keyboadrdState.IsKeyDown(item.Key))
+                _history.Add(new Cast(value, item));
+
+        value.Activated = activated;
     }
 
     private void SetActivated()
@@ -50,5 +58,8 @@ public class Player : GameComponent
         base.Update(gameTime);
     }
 
-    public Player(Game game) : base(game) { }
+    public Player(History history) : base(history.Game)
+    {
+        _history = history;
+    }
 }

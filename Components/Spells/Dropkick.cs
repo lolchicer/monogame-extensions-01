@@ -11,7 +11,10 @@ public class Dropkick : Spell
 
     public override void Use(GameTime gameTime)
     {
-        _level.Projectiles.Add(new DropkickProjectile(User, _level));
+        _level.History.Add(
+            new SummonProjectile(
+                _level,
+                new DropkickProjectile(User, _level)));
     }
 
     public Dropkick(Level level, Entity user)

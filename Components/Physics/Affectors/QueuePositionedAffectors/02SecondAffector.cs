@@ -2,7 +2,7 @@ namespace MonogameTest01;
 
 public abstract class SecondAffector : Affector
 {
-    public override AffectorsQueue.Position QueuePosition => AffectorsQueue.Position.Second;
+    public override IQueue.Position QueuePosition => IQueue.Position.Second;
 
     public SecondAffector(Mechanics mechanics) : base(mechanics) { }
 }

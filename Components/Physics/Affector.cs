@@ -8,18 +8,20 @@ public abstract class Affector : GameComponent
 
     protected Vector2 _velocity;
 
+    private void Reset()
+    {
+        _velocity = Vector2.Zero;
+    }
+
     protected abstract void UpdateVelocity(GameTime gameTime);
 
-    public abstract AffectorsQueue.Position QueuePosition { get; }
-
-    // пока неясно как надо ли использовать Mechanics целиком
-    public Vector2 Velocity => _velocity;
+    public abstract IQueue.Position QueuePosition { get; }
 
     public override void Update(GameTime gameTime)
     {
-        _velocity = Vector2.Zero;
+        Reset();
         UpdateVelocity(gameTime);
-        _mechanics.Velocity += _velocity;
+        _mechanics.Commands.Add(new Accelerate(_mechanics, _velocity, QueuePosition));
 
         base.Update(gameTime);
     }

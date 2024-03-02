@@ -18,8 +18,8 @@ public class Health : GameComponent
         base.Update(gameTime);
     }
 
-    public Health(Entity user, Game game)
-    : base(game)
+    public Health(Entity user)
+    : base(user.Game)
     {
         _user = user;
     }

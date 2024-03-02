@@ -1,13 +1,19 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
 public class Level : DrawableGameComponent
 {
+    private History _history;
     private Player _player;
-    public List<Entity> Entities { get; } = new();
+
+    public History History => _history;
+    public Player Player => _player;
     public List<Projectile> Projectiles { get; } = new();
+    public List<ICommand> Commands { get; } = new();
+    public List<Entity> Entities { get; } = new();
 
     public override void Update(GameTime gameTime)
     {
@@ -15,6 +21,7 @@ public class Level : DrawableGameComponent
         Entities.ForEach(entity => entity.Update(gameTime));
         foreach (var projectile in Projectiles.ToArray())
             projectile.Update(gameTime);
+        _history.Update(gameTime);
 
         base.Update(gameTime);
     }
@@ -31,8 +38,9 @@ public class Level : DrawableGameComponent
         base.Draw(gameTime);
     }
 
-    public Level(Game game, Player player) : base(game)
+    public Level(Game game) : base(game)
     {
-        _player = player;
+        _history = new History(game);
+        _player = new Player(_history);
     }
 }

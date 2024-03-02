@@ -8,12 +8,19 @@ namespace MonogameTest01;
 public class Linking : SecondAffector
 {
     private IEnumerable<ILinkingComponent> _components;
-    private MechanicsVelocityPoller _velocityPoller;
+    private Mechanics _previous;
+
+    private bool Asdf(ILinkingComponent component)
+    {
+        var initialDifference = (_previous.Velocity - component.Velocity - component.DestinatedVelocity).Length();
+        var currentDifference = (_velocity + component.Velocity - component.DestinatedVelocity).Length();
+        return currentDifference > initialDifference;
+    }
 
     private IList<ILinkingComponent> Triggered() =>
     new List<ILinkingComponent>(
         from linker in _components
-        where linker.Linking(_velocity)
+        where Asdf(linker)
         select linker);
 
     private ILinkingComponent First() =>
@@ -26,7 +33,7 @@ public class Linking : SecondAffector
             .Max());
 
     private void UpdateVelocity(ILinkingComponent component, GameTime gameTime)
-    => _velocity += component.DestinatedVelocity - _velocityPoller.Velocity;
+    => _velocity += component.DestinatedVelocity - _previous.Velocity;
 
     private bool Unlinked() =>
     Triggered().Count > 0;
@@ -44,6 +51,6 @@ public class Linking : SecondAffector
     : base(mechanics)
     {
         _components = components;
-        _velocityPoller = mechanics.VelocityPoller;
+        _previous = mechanics;
     }
 }

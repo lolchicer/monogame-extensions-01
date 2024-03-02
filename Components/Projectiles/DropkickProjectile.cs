@@ -1,11 +1,10 @@
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace MonogameTest01;
 
 public class DropkickProjectile : Projectile
 {
+    private History _history;
     private int _duration = 3;
 
     protected override bool Alive => _duration > 0;
@@ -24,11 +23,14 @@ public class DropkickProjectile : Projectile
         foreach (var entity in _level.Entities)
             if (Hitbox.Contains(entity.Position))
             {
-                entity.Health.Value--;
-                entity.Effects.Value.Add(new Expose(entity, _level, _level.Game));
+                _history.Add(new Damage(entity.Health, 1));
+                _history.Add(new EffectApply(entity.Effects, new Expose(entity, _level, _level.Game)));
             }
     }
 
     public DropkickProjectile(Entity user, Level level)
-    : base(user, level) { }
+    : base(user, level)
+    {
+        _history = level.History;
+    }
 }
