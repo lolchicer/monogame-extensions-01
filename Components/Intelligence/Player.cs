@@ -36,12 +36,9 @@ public class Player : GameComponent
     {
         var keyboadrdState = Keyboard.GetState();
 
-        var activated = new List<Spell>();
         foreach (var item in value.Value)
             if (keyboadrdState.IsKeyDown(item.Key))
                 _history.Add(new Cast(value, item));
-
-        value.Activated = activated;
     }
 
     private void SetActivated()
