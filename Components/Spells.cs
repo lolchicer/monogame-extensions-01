@@ -13,6 +13,8 @@ public class Spells : GameComponent
         foreach (var item in Activated)
             item.Use(gameTime);
 
+        Activated.Clear();
+        
         base.Update(gameTime);
     }
 
