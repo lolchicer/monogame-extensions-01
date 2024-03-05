@@ -2,7 +2,7 @@ namespace MonogameTest01;
 
 public abstract class ThirdAffector : Affector
 {
-    protected override IQueue.Position QueuePosition => IQueue.Position.Third;
+    protected override ISteppedQueue.Position QueuePosition => ISteppedQueue.Position.Third;
 
     public ThirdAffector(Mechanics mechanics) : base(mechanics) { }
 }

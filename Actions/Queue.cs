@@ -5,46 +5,17 @@ namespace MonogameTest01;
 
 public class Queue : IQueue
 {
-    private (
-        IList<Action> First,
-        IList<Action> Second,
-        IList<Action> Third)
-        _value = (
-            First: new List<Action>(),
-            Second: new List<Action>(),
-            Third: new List<Action>());
+    private IList<Action> _value = new List<Action>();
 
-    public void Add(Action value, IQueue.Position position)
+    public void Add(Action value)
     {
-        switch (position)
-        {
-            case IQueue.Position.First:
-                _value.First.Add(value);
-                break;
-            case IQueue.Position.Second:
-                _value.Second.Add(value);
-                break;
-            case IQueue.Position.Third:
-                _value.Third.Add(value);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void Do(IList<Action> step)
-    {
-        foreach (var action in step)
-            action();
-        step.Clear();
+        _value.Add(value);
     }
 
     public void Do()
     {
-        Do(_value.First);
-        Do(_value.Second);
-        Do(_value.Third);
+        foreach (var action in _value)
+            action();
+        _value.Clear();
     }
-
-    public Queue() { }
 }

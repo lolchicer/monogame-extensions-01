@@ -9,13 +9,13 @@ public class Mechanics : GameComponent
 {
     private IList<Affector> _affectors = new List<Affector>();
     private History _history;
-    private Queue _queue = new();
+    private SteppedQueue _queue = new();
     
     public Vector2 Velocity { get; set; } = new() { X = 0, Y = 0 };
     public Vector2 Position { get; set; } = new() { X = 0, Y = 0 };
 
     public IList<Affector> Affectors => _affectors;
-    public Queue Queue => _queue;
+    public SteppedQueue Queue => _queue;
 
     public override void Update(GameTime gameTime)
     {
