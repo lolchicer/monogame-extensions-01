@@ -11,7 +11,7 @@ public class Expose : GameComponent
     public override void Update(GameTime gameTime)
     {
         if (_user.Hit(_level))
-            _level.History.Add(new Death());
+            _level.History.Add(Death.Value());
 
         base.Update(gameTime);
     }

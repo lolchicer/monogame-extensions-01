@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
@@ -5,20 +6,20 @@ namespace MonogameTest01;
 
 public class History : GameComponent
 {
-    private IList<ICommand> _commands = new List<ICommand>();
+    private IList<Action> _actions = new List<Action>();
     private void Do()
     {
-        foreach (var command in _commands)
-            command.Do();
+        foreach (var action in _actions)
+            action();
     }
 
-    public void Add(ICommand value) =>
-    _commands.Add(value);
+    public void Add(Action value) =>
+    _actions.Add(value);
 
     public override void Update(GameTime gameTime)
     {
         Do();
-        _commands.Clear();
+        _actions.Clear();
     }
 
     public History(Game game)

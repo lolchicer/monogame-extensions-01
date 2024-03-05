@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -12,7 +13,7 @@ public class Level : DrawableGameComponent
     public History History => _history;
     public Player Player => _player;
     public List<Projectile> Projectiles { get; } = new();
-    public List<ICommand> Commands { get; } = new();
+    public List<Action> Actions { get; } = new();
     public List<Entity> Entities { get; } = new();
 
     public override void Update(GameTime gameTime)

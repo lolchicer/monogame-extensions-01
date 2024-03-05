@@ -23,8 +23,8 @@ public class DropkickProjectile : Projectile
         foreach (var entity in _level.Entities)
             if (Hitbox.Contains(entity.Position))
             {
-                _history.Add(new Damage(entity.Health, 1));
-                _history.Add(new EffectApply(entity.Effects, new Expose(entity, _level, _level.Game)));
+                _history.Add(Damage.Value(entity.Health, 1));
+                _history.Add(EffectApply.Value(entity.Effects, new Expose(entity, _level, _level.Game)));
             }
     }
 

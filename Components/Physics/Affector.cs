@@ -15,13 +15,13 @@ public abstract class Affector : GameComponent
 
     protected abstract void UpdateVelocity(GameTime gameTime);
 
-    public abstract IQueue.Position QueuePosition { get; }
+    protected abstract IQueue.Position QueuePosition { get; }
 
     public override void Update(GameTime gameTime)
     {
         Reset();
         UpdateVelocity(gameTime);
-        _mechanics.Commands.Add(new Accelerate(_mechanics, _velocity, QueuePosition));
+        _mechanics.Queue.Add(Accelerate.Value(_mechanics, _velocity), QueuePosition);
 
         base.Update(gameTime);
     }
