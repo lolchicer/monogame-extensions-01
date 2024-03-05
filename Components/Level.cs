@@ -6,10 +6,10 @@ namespace MonogameTest01;
 
 public class Level : DrawableGameComponent
 {
-    private History _history = new();
+    private Queue _history = new();
     private Player _player;
 
-    public History History => _history;
+    public Queue History => _history;
     
     public Player Player => _player;
     public List<Projectile> Projectiles { get; } = new();

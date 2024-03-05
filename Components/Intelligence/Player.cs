@@ -6,7 +6,7 @@ namespace MonogameTest01;
 
 public class Player : GameComponent
 {
-    private History _history;
+    private Queue _history;
 
     public List<Input> Inputs { get; } = new();
     public List<Spells> SpellsCollections { get; } = new();
