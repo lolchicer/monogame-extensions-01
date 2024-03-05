@@ -28,8 +28,8 @@ public class Mechanics : GameComponent
         base.Update(gameTime);
     }
 
-    public Mechanics(History history) : base(history.Game)
+    public Mechanics(Level level) : base(level.Game)
     {
-        _history = history;
+        _history = level.History;
     }
 }
