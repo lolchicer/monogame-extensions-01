@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace MonogameTest01;
@@ -11,5 +12,7 @@ public interface IQueue
         Third
     }
 
-    public IList<IQueued> Value { get;}
+    public void Add(Action value, Position position);
+
+    public Action Value();
 }

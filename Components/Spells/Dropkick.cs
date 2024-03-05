@@ -12,7 +12,7 @@ public class Dropkick : Spell
     public override void Use(GameTime gameTime)
     {
         _level.History.Add(
-            new SummonProjectile(
+            SummonProjectile.Value(
                 _level,
                 new DropkickProjectile(User, _level)));
     }
