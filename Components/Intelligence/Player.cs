@@ -38,7 +38,7 @@ public class Player : GameComponent
 
         foreach (var item in value.Value)
             if (keyboadrdState.IsKeyDown(item.Key))
-                _history.Add(new Cast(value, item));
+                value.Activated.Add(item);
     }
 
     private void SetActivated()
