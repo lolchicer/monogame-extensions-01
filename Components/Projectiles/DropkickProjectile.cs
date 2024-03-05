@@ -13,9 +13,9 @@ public class DropkickProjectile : Projectile
 
     public override void Update(GameTime gameTime)
     {
-        _duration--;
-
         base.Update(gameTime);
+
+        _duration--;
     }
 
     public override void Action(GameTime gameTime)

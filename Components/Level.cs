@@ -18,9 +18,9 @@ public class Level : DrawableGameComponent
     public override void Update(GameTime gameTime)
     {
         _player.Update(gameTime);
-        Entities.ForEach(entity => entity.Update(gameTime));
         foreach (var projectile in Projectiles.ToArray())
             projectile.Update(gameTime);
+        Entities.ForEach(entity => entity.Update(gameTime));
         _history.Update(gameTime);
 
         base.Update(gameTime);
