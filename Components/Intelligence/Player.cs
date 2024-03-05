@@ -4,10 +4,8 @@ using System.Collections.Generic;
 
 namespace MonogameTest01;
 
-public class Player : GameComponent
+public class Player : LevelComponent
 {
-    private Queue _history;
-
     public List<Input> Inputs { get; } = new();
     public List<Spells> SpellsCollections { get; } = new();
 
@@ -55,8 +53,6 @@ public class Player : GameComponent
         base.Update(gameTime);
     }
 
-    public Player(Level level) : base(level.Game)
-    {
-        _history = level.History;
-    }
+    public Player(Level level)
+    : base(level) { }
 }

@@ -14,7 +14,7 @@ public class Dropkick : Spell
         _level.History.Add(
             SummonProjectile.Value(
                 _level,
-                new DropkickProjectile(User, _level)));
+                new DropkickProjectile(User)));
     }
 
     public Dropkick(Level level, Entity user)

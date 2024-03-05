@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Spells : GameComponent
+public class Spells : LevelComponent
 {
     public IList<Spell> Value { get; } = new List<Spell>();
     public IList<Spell> Activated { get; set; } = new List<Spell>();
@@ -18,6 +18,6 @@ public class Spells : GameComponent
         base.Update(gameTime);
     }
 
-    public Spells(Game game)
-    : base(game) { }
+    public Spells(Level level)
+    : base(level) { }
 }

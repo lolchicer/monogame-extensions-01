@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Effects : GameComponent
+public class Effects : LevelComponent
 {
     public IList<GameComponent> Value { get; } = new List<GameComponent>();
 
@@ -15,6 +15,6 @@ public class Effects : GameComponent
         base.Update(gameTime);
     }
 
-    public Effects(Game game)
-    : base(game) { }
+    public Effects(Level level)
+    : base(level) { }
 }
