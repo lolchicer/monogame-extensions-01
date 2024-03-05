@@ -14,5 +14,5 @@ public interface IQueue
 
     public void Add(Action value, Position position);
 
-    public Action Value();
+    public void Do();
 }

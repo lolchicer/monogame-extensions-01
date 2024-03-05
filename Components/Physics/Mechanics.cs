@@ -22,7 +22,7 @@ public class Mechanics : GameComponent
         foreach (var affector in _affectors)
             affector.Update(gameTime);
 
-        _history.Add(_queue.Value());
+        _history.Add(() => _queue.Do());
         _history.Add(Move.Value(this, Velocity));
 
         base.Update(gameTime);
