@@ -39,13 +39,12 @@ public class Queue : IQueue
         step.Clear();
     }
 
-    public Action Value() =>
-    () =>
+    public void Do()
     {
         Do(_value.First);
         Do(_value.Second);
         Do(_value.Third);
-    };
+    }
 
     public Queue() { }
 }
