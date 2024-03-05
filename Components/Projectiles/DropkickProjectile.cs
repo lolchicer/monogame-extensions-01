@@ -4,7 +4,7 @@ namespace MonogameTest01;
 
 public class DropkickProjectile : Projectile
 {
-    private History _history;
+    private Queue _history;
     private int _duration = 3;
 
     protected override bool Alive => _duration > 0;

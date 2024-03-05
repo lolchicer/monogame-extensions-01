@@ -8,7 +8,7 @@ namespace MonogameTest01;
 public class Mechanics : GameComponent
 {
     private IList<Affector> _affectors = new List<Affector>();
-    private History _history;
+    private Queue _history;
     private SteppedQueue _queue = new();
     
     public Vector2 Velocity { get; set; } = new() { X = 0, Y = 0 };
