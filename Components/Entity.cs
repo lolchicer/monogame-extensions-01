@@ -40,7 +40,7 @@ public abstract class Entity : DrawableGameComponent
     {
         _level = level;
 
-        Mechanics = new Mechanics(_level.History);
+        Mechanics = new Mechanics(_level);
 
         _input = new Input(Mechanics);
         var friction = new Friction(Mechanics, _level);

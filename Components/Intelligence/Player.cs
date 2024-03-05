@@ -55,8 +55,8 @@ public class Player : GameComponent
         base.Update(gameTime);
     }
 
-    public Player(History history) : base(history.Game)
+    public Player(Level level) : base(level.Game)
     {
-        _history = history;
+        _history = level.History;
     }
 }

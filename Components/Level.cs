@@ -45,6 +45,6 @@ public class Level : DrawableGameComponent
 
     public Level(Game game) : base(game)
     {
-        _player = new Player(_history);
+        _player = new Player(this);
     }
 }
