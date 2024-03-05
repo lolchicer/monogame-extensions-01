@@ -1,25 +1,22 @@
-using System;
 using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Expose : GameComponent
+public class Expose : LevelComponent
 {
     private Entity _user;
-    private Level _level;
 
     public override void Update(GameTime gameTime)
     {
-        if (_user.Hit(_level))
-            _level.History.Add(Death.Value());
+        if (_user.Hit(Level))
+            Level.History.Add(Death.Value());
 
         base.Update(gameTime);
     }
 
-    public Expose(Entity user, Level level, Game game)
-    : base(game)
+    public Expose(Entity user, Level level)
+    : base(level)
     {
         _user = user;
-        _level = level;
     }
 }

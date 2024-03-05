@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Health : GameComponent
+public class Health : LevelComponent
 {
     private Entity _user;
 
@@ -19,7 +19,7 @@ public class Health : GameComponent
     }
 
     public Health(Entity user)
-    : base(user.Game)
+    : base(user.Level)
     {
         _user = user;
     }

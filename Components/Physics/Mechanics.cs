@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Mechanics : GameComponent
+public class Mechanics : LevelComponent
 {
     private IList<Affector> _affectors = new List<Affector>();
     private Queue _history;
@@ -28,7 +28,8 @@ public class Mechanics : GameComponent
         base.Update(gameTime);
     }
 
-    public Mechanics(Level level) : base(level.Game)
+    public Mechanics(Level level)
+    : base(level)
     {
         _history = level.History;
     }

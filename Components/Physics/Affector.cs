@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public abstract class Affector : GameComponent
+public abstract class Affector : LevelComponent
 {
     private Mechanics _mechanics;
 
@@ -26,7 +26,8 @@ public abstract class Affector : GameComponent
         base.Update(gameTime);
     }
 
-    public Affector(Mechanics mechanics) : base(mechanics.Game)
+    public Affector(Mechanics mechanics)
+    : base(mechanics.Level)
     {
         _mechanics = mechanics;
     }

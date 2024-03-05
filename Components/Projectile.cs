@@ -2,31 +2,32 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public abstract class Projectile : GameComponent
+public abstract class Projectile : LevelComponent
 {
-    protected Entity _user;
-    protected Level _level;
+    private Entity _user;
+    
     protected abstract bool Alive { get; }
-    public Entity User => _user;
+    protected abstract void Action(GameTime gameTime);
     public abstract Rectangle Hitbox { get; }
-    public abstract void Action(GameTime gameTime);
+
+    public Entity User => _user;
+    
     public override void Update(GameTime gameTime)
     {
         if (Alive)
-            foreach (var entity in _level.Entities)
+            foreach (var entity in Level.Entities)
                 if (Hitbox.Contains(entity.Mechanics.Position) && entity != _user)
                     Action(gameTime);
                 else { }
         else
-            _level.Projectiles.Remove(this);
+            Level.Projectiles.Remove(this);
 
         base.Update(gameTime);
     }
 
-    public Projectile(Entity user, Level level)
-    : base(level.Game)
+    public Projectile(Entity user)
+    : base(user.Level)
     {
         _user = user;
-        _level = level;
     }
 }

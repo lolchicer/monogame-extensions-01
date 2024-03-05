@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
@@ -28,7 +25,7 @@ public class Friction : FirstAffector, ILinkingComponent
     // прапрекрывапр
     public Vector2 Velocity => _linkingComponentVelocity;
 
-    public Friction(Mechanics mechanics, Level level) : base(mechanics)
+    public Friction(Mechanics mechanics) : base(mechanics)
     {
         // и каким образом _mechanics тут сокрыто
         // короче моногейм моументс

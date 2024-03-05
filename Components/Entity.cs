@@ -1,10 +1,10 @@
+using System;
 using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public abstract class Entity : DrawableGameComponent
+public abstract class Entity : LevelComponent, IDrawable
 {
-    private Level _level;
     private Input _input;
     private EntityDrawer _drawer;
 
@@ -29,21 +29,31 @@ public abstract class Entity : DrawableGameComponent
         base.Update(gameTime);
     }
 
-    public override void Draw(GameTime gameTime)
+    // сомнительно но оукэээй
+    public void Draw(GameTime gameTime) 
+    => _drawer.Draw(gameTime);
+    public int DrawOrder =>
+    _drawer.DrawOrder;
+    public event EventHandler<EventArgs> DrawOrderChanged
     {
-        _drawer.Draw(gameTime);
-
-        base.Draw(gameTime);
+        add => _drawer.DrawOrderChanged += value;
+        remove => _drawer.DrawOrderChanged += value;
+    }
+    public bool Visible =>
+    _drawer.Visible;
+    public event EventHandler<EventArgs> VisibleChanged
+    {
+        add => _drawer.VisibleChanged += value;
+        remove => _drawer.VisibleChanged += value;
     }
 
-    public Entity(Level level) : base(level.Game)
+    public Entity(Level level)
+    : base(level)
     {
-        _level = level;
-
-        Mechanics = new Mechanics(_level);
+        Mechanics = new(level);
 
         _input = new Input(Mechanics);
-        var friction = new Friction(Mechanics, _level);
+        var friction = new Friction(Mechanics);
 
         foreach (var affector in new Affector[] {
             _input,
@@ -54,8 +64,8 @@ public abstract class Entity : DrawableGameComponent
         // new Collision(Mechanics, _mechanicsVelocityPoller, _mechanicsPositionPoller, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 }),
 
         Health = new(this);
-        Spells = new(Game);
-        Effects = new(Game);
+        Spells = new(level);
+        Effects = new(level);
 
         Spells.Value.Add(new Dropkick(level, this));
 
