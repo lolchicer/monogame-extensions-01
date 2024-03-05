@@ -15,7 +15,7 @@ public abstract class Affector : GameComponent
 
     protected abstract void UpdateVelocity(GameTime gameTime);
 
-    protected abstract IQueue.Position QueuePosition { get; }
+    protected abstract ISteppedQueue.Position QueuePosition { get; }
 
     public override void Update(GameTime gameTime)
     {
