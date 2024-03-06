@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
@@ -10,25 +11,37 @@ public class Level : DrawableGameComponent
     private Player _player;
 
     public Queue History => _history;
-    
-    public Player Player => _player;
-    public List<Projectile> Projectiles { get; } = new();
-    public List<Entity> Entities { get; } = new();
-    
-    protected IEnumerable<IUpdateable> Updateables()
-    {
-        var value = new IUpdateable[Projectiles.Count + Entities.Count];
-        Array.Copy(Projectiles.ToArray(), value, Projectiles.Count);
-        Array.Copy(Entities.ToArray(), 0, value, Projectiles.Count, Entities.Count);
-        return value;
-    }
 
-    protected IEnumerable<IDrawable> Drawables() =>
+    public Player Player => _player;
+    public IList<Projectile> Projectiles { get; } = new List<Projectile>();
+    public IList<Entity> Entities { get; } = new List<Entity>();
+
+    protected IEnumerable<IUpdateable> Updateables
+    {
+        get
+        {
+            var value = new IUpdateable[Projectiles.Count + Entities.Count];
+            Array.Copy(Projectiles.ToArray(), value, Projectiles.Count);
+            Array.Copy(Entities.ToArray(), 0, value, Projectiles.Count, Entities.Count);
+            return value;
+        }
+    }
+    protected IEnumerable<IDrawable> Drawables =>
     Entities.ToArray();
+    protected IEnumerable<IParent> Parents
+    {
+        get
+        {
+            var value = new IParent[Projectiles.Count + Entities.Count];
+            Array.Copy(Projectiles.ToArray(), value, Projectiles.Count);
+            Array.Copy(Entities.ToArray(), 0, value, Projectiles.Count, Entities.Count);
+            return value;
+        }
+    }
 
     public override void Update(GameTime gameTime)
     {
-        foreach (var updateable in Updateables())
+        foreach (var updateable in Updateables)
             updateable.Update(gameTime);
         _history.Do();
 
@@ -37,7 +50,7 @@ public class Level : DrawableGameComponent
 
     public override void Draw(GameTime gameTime)
     {
-        foreach (var drawable in Drawables())
+        foreach (var drawable in Drawables)
             drawable.Draw(gameTime);
 
         base.Draw(gameTime);

@@ -1,6 +1,7 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace MonogameTest01;
 
@@ -52,6 +53,10 @@ public class Player : LevelComponent
 
         base.Update(gameTime);
     }
+
+    public override IEnumerable<IUpdateable> Updateables => Array.Empty<IUpdateable>();
+    public override IEnumerable<IDrawable> Drawables => Array.Empty<IDrawable>();
+    public override IEnumerable<IParent> Parents => Array.Empty<IParent>();
 
     public Player(Level level)
     : base(level) { }

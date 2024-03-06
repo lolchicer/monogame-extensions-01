@@ -16,6 +16,8 @@ public abstract class Affector : LevelComponent
     protected abstract void UpdateVelocity(GameTime gameTime);
 
     protected abstract ISteppedQueue.Position QueuePosition { get; }
+    
+    public Mechanics Mechanics => _mechanics;
 
     public override void Update(GameTime gameTime)
     {
