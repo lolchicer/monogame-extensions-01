@@ -8,6 +8,8 @@ public abstract class Affector : LevelComponent
 
     protected Vector2 _velocity;
 
+    public Vector2 Velocity => _velocity;
+
     private void Reset()
     {
         _velocity = Vector2.Zero;
@@ -21,7 +23,7 @@ public abstract class Affector : LevelComponent
     {
         Reset();
         UpdateVelocity(gameTime);
-        _mechanics.Queue.Add(Accelerate.Value(_mechanics, _velocity), QueuePosition);
+        _mechanics.Queue.Add(Accelerate.Value(_mechanics, this), QueuePosition);
 
         base.Update(gameTime);
     }

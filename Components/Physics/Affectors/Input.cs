@@ -36,7 +36,6 @@ public class Input : ThirdAffector
     }
 
     public List<Direction> Directions { get; } = new();
-    public Vector2 Velocity => _velocity;
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
