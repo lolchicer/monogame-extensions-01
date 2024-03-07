@@ -28,6 +28,7 @@ public class Level : DrawableGameComponent
 
     public override void Update(GameTime gameTime)
     {
+        Player.Update(gameTime);
         foreach (var updateable in Updateables())
             updateable.Update(gameTime);
         _history.Do();
