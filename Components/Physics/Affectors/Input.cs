@@ -5,38 +5,19 @@ namespace MonogameTest01;
 
 public class Input : ThirdAffector
 {
-    public enum Direction
-    {
-        Left,
-        Right
-    }
-
     private const float _minSpeed = 2.0f;
     private const float _maxSpeed = 4.0f;
     private Mechanics _mechanics;
 
-    public List<Direction> Directions { get; } = new();
+    public Directions.Onedimensional.Duo Directions { get; set; }
     public Vector2 Velocity => _velocity;
-
-    private void Accelerate(Direction direction)
-    {
-        switch (direction)
-        {
-            case Direction.Left:
-                _velocity += new Vector2 { X = -1, Y = 0 };
-                break;
-            case Direction.Right:
-                _velocity += new Vector2 { X = 1, Y = 0 };
-                break;
-            default:
-                break;
-        }
-    }
 
     private void Accelerate()
     {
-        foreach (var direction in Directions)
-            Accelerate(direction);
+        if(Directions.Leftwards)
+            _velocity += new Vector2 { X = -1, Y = 0 };
+        if(Directions.Rightwards)
+            _velocity += new Vector2 { X = 1, Y = 0 };
     }
 
     private void Normalize()
@@ -60,7 +41,7 @@ public class Input : ThirdAffector
         Accelerate();
         Normalize();
         Hold();
-        Directions.Clear();
+        Directions.Reset();
     }
 
     public Input(Mechanics mechanics)

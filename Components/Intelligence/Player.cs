@@ -12,15 +12,14 @@ public class Player : LevelComponent
     private void SetDirections(Input value)
     {
         var keyboadrdState = Keyboard.GetState();
-
-        var directions = new List<Input.Direction>();
-
+        var directions = new Directions.Onedimensional.Duo();
+        
         if (keyboadrdState.IsKeyDown(Keys.A))
-            directions.Add(Input.Direction.Left);
+            directions.Leftwards = true;
         if (keyboadrdState.IsKeyDown(Keys.D))
-            directions.Add(Input.Direction.Right);
+            directions.Rightwards = true;;
 
-        value.Directions.AddRange(directions);
+        value.Directions = directions;
     }
 
     // стоит ли писать мне в этом названии Input 🤔
