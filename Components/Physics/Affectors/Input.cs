@@ -8,7 +8,9 @@ public class Input : ThirdAffector
     public enum Direction
     {
         Left,
-        Right
+        Right,
+        Up,
+        Down
     }
 
     private const float _speed = 2.0f;
@@ -23,6 +25,12 @@ public class Input : ThirdAffector
                 break;
             case Direction.Right:
                 _velocity += new Vector2 { X = 1, Y = 0 };
+                break;
+            case Direction.Up:
+                _velocity += new Vector2 { X = 0, Y = -1 };
+                break;
+            case Direction.Down:
+                _velocity += new Vector2 { X = 0, Y = 1 };
                 break;
             default:
                 break;
