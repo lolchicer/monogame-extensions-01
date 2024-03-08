@@ -9,16 +9,10 @@ public enum SpriteState
     Walking
 }
 
-public enum SpriteDirection
-{
-    Left,
-    Right
-}
-
 public class EntityDrawer : DrawableGameComponent
 {
     private Entity _entity;
-    private SpriteDirection _spriteDirection = MonogameTest01.SpriteDirection.Left;
+    private Directions.Onedimensional.Enum _spriteDirection= Directions.Onedimensional.Enum.Leftwards;
     
     private SpriteState SpriteState()
     {
@@ -28,12 +22,12 @@ public class EntityDrawer : DrawableGameComponent
     }
 
     // чё ваще
-    protected SpriteDirection SpriteDirection()
+    protected Directions.Onedimensional.Enum SpriteDirection()
     {
         _spriteDirection = _entity.Input.Velocity.X switch
         {
-            < 0 => MonogameTest01.SpriteDirection.Left,
-            > 0 => MonogameTest01.SpriteDirection.Right,
+            < 0 => Directions.Onedimensional.Enum.Leftwards,
+            > 0 => Directions.Onedimensional.Enum.Rightwards,
             _ => _spriteDirection
         };
         return _spriteDirection;
@@ -60,7 +54,7 @@ public class EntityDrawer : DrawableGameComponent
 
         switch (SpriteDirection())
         {
-            case MonogameTest01.SpriteDirection.Left:
+            case Directions.Onedimensional.Enum.Leftwards:
                 SpriteBatch.Draw(texture, _entity.Position, null, Color.White, 0,
                 new() { X = 0, Y = 0 }, 1, SpriteEffects.FlipHorizontally, 1);
                 break;

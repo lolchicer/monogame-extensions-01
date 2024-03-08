@@ -17,7 +17,7 @@ public class Input : ThirdAffector
     private const float _maxSpeed = 4.0f;
     private Mechanics _mechanics;
 
-    public List<Direction> Directions { get; } = new();
+    public Directions.Onedimensional.Duo Directions { get; set; }
     public Vector2 Velocity => _velocity;
 
     private void Accelerate(Direction direction)
@@ -43,8 +43,10 @@ public class Input : ThirdAffector
 
     private void Accelerate()
     {
-        foreach (var direction in Directions)
-            Accelerate(direction);
+        if(Directions.Leftwards)
+            _velocity += new Vector2 { X = -1, Y = 0 };
+        if(Directions.Rightwards)
+            _velocity += new Vector2 { X = 1, Y = 0 };
     }
 
     private void Normalize()
@@ -68,7 +70,7 @@ public class Input : ThirdAffector
         Accelerate();
         Normalize();
         Hold();
-        Directions.Clear();
+        Directions.Reset();
     }
 
     public Input(Mechanics mechanics)
