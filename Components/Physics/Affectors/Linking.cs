@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -8,20 +7,31 @@ namespace MonogameTest01;
 public class Linking : SecondAffector
 {
     private IEnumerable<ILinkingComponent> _components;
-    private Mechanics _previous;
+    private Mechanics _mechanics;
 
-    private bool Asdf(ILinkingComponent component)
+    private bool Triggered(ILinkingComponent component)
     {
-        var initialDifference = (_previous.Velocity - component.Velocity - component.DestinatedVelocity).Length();
-        var currentDifference = (_velocity + component.Velocity - component.DestinatedVelocity).Length();
-        return currentDifference > initialDifference;
+        // считается скалярная разница от component.DestinatedVelocity
+        var initialVelocity = (
+            // скорость тела перед торможением
+            _mechanics.Velocity - component.DestinatedVelocity).Length();
+        var counteringVelocity = (
+            // скорость для торможения тела вместе со скоростью спряжения
+            _velocity + component.Velocity - component.DestinatedVelocity).Length();
+        return counteringVelocity > initialVelocity;
     }
 
     private IList<ILinkingComponent> Triggered() =>
     new List<ILinkingComponent>(
         from linker in _components
-        where Asdf(linker)
+        where Triggered(linker)
         select linker);
+
+    private void UpdateVelocity(ILinkingComponent component)
+    => _velocity += component.DestinatedVelocity - _mechanics.Velocity - component.Velocity;
+
+    private bool Unlinked() =>
+    Triggered().Count > 0;
 
     private ILinkingComponent First() =>
     Triggered().First(
@@ -32,25 +42,16 @@ public class Linking : SecondAffector
             select linker2.DestinatedVelocity.Length())
             .Max());
 
-    private void UpdateVelocity(ILinkingComponent component, GameTime gameTime)
-    => _velocity += component.DestinatedVelocity - _previous.Velocity;
-
-    private bool Unlinked() =>
-    Triggered().Count > 0;
-
     protected override void UpdateVelocity(GameTime gameTime)
     {
         while (Unlinked())
-        {
-            var first = First();
-            UpdateVelocity(first, gameTime);
-        }
+            UpdateVelocity(First());
     }
 
     public Linking(IEnumerable<ILinkingComponent> components, Mechanics mechanics)
     : base(mechanics)
     {
         _components = components;
-        _previous = mechanics;
+        _mechanics = mechanics;
     }
 }
