@@ -23,7 +23,7 @@ public class Mechanics : LevelComponent
             affector.Update(gameTime);
 
         _history.Add(() => _queue.Do());
-        _history.Add(Move.Value(this, Velocity));
+        _history.Add(() => Position += Velocity);
 
         base.Update(gameTime);
     }

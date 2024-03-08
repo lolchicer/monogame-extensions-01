@@ -21,7 +21,7 @@ public abstract class Affector : LevelComponent
     {
         Reset();
         UpdateVelocity(gameTime);
-        _mechanics.Queue.Add(Accelerate.Value(_mechanics, _velocity), QueuePosition);
+        _mechanics.Queue.Add(() => _mechanics.Velocity += _velocity, QueuePosition);
 
         base.Update(gameTime);
     }
