@@ -17,36 +17,19 @@ public class Input : ThirdAffector
     private const float _maxSpeed = 4.0f;
     private Mechanics _mechanics;
 
-    public Directions.Onedimensional.Duo Directions { get; set; }
+    public Directions.Twodimensional.Quad Directions { get; set; }
     public Vector2 Velocity => _velocity;
-
-    private void Accelerate(Direction direction)
-    {
-        switch (direction)
-        {
-            case Direction.Left:
-                _velocity += new Vector2 { X = -1, Y = 0 };
-                break;
-            case Direction.Right:
-                _velocity += new Vector2 { X = 1, Y = 0 };
-                break;
-            case Direction.Up:
-                _velocity += new Vector2 { X = 0, Y = -1 };
-                break;
-            case Direction.Down:
-                _velocity += new Vector2 { X = 0, Y = 1 };
-                break;
-            default:
-                break;
-        }
-    }
 
     private void Accelerate()
     {
-        if(Directions.Leftwards)
+        if (Directions.Leftwards)
             _velocity += new Vector2 { X = -1, Y = 0 };
-        if(Directions.Rightwards)
+        if (Directions.Upwards)
+            _velocity += new Vector2 { X = 0, Y = -1 };
+        if (Directions.Rightwards)
             _velocity += new Vector2 { X = 1, Y = 0 };
+        if (Directions.Downwards)
+            _velocity += new Vector2 { X = 0, Y = 1 };
     }
 
     private void Normalize()

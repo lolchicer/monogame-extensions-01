@@ -12,12 +12,16 @@ public class Player : LevelComponent
     private void SetDirections(Input value)
     {
         var keyboadrdState = Keyboard.GetState();
-        var directions = new Directions.Onedimensional.Duo();
-        
+        var directions = new Directions.Twodimensional.Quad();
+
         if (keyboadrdState.IsKeyDown(Keys.A))
             directions.Leftwards = true;
+        if (keyboadrdState.IsKeyDown(Keys.W))
+            directions.Upwards = true;
         if (keyboadrdState.IsKeyDown(Keys.D))
-            directions.Rightwards = true;;
+            directions.Rightwards = true;
+        if (keyboadrdState.IsKeyDown(Keys.S))
+            directions.Downwards = true;
 
         value.Directions = directions;
     }
