@@ -5,14 +5,6 @@ namespace MonogameTest01;
 
 public class Input : ThirdAffector
 {
-    public enum Direction
-    {
-        Left,
-        Right,
-        Up,
-        Down
-    }
-
     private const float _minSpeed = 2.0f;
     private const float _maxSpeed = 4.0f;
     private Mechanics _mechanics;
