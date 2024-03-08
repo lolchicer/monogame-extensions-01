@@ -11,8 +11,12 @@ public class Input : ThirdAffector
         Right
     }
 
-    private const float _speed = 2.0f;
+    private const float _minSpeed = 2.0f;
+    private const float _maxSpeed = 4.0f;
     private Mechanics _mechanics;
+
+    public List<Direction> Directions { get; } = new();
+    public Vector2 Velocity => _velocity;
 
     private void Accelerate(Direction direction)
     {
@@ -29,28 +33,33 @@ public class Input : ThirdAffector
         }
     }
 
-    private void Accelerate(IEnumerable<Direction> directions)
+    private void Accelerate()
     {
-        foreach (var direction in directions)
+        foreach (var direction in Directions)
             Accelerate(direction);
     }
 
-    public List<Direction> Directions { get; } = new();
-    public Vector2 Velocity => _velocity;
+    private void Normalize()
+    {
+        if (_velocity != Vector2.Zero)
+        {
+            _velocity.Normalize();
+            _velocity *= _minSpeed;
+        }
+    }
+
+    // крутой аирконтроль чел
+    private void Hold()
+    {
+        if (_mechanics.Velocity.Length() > _maxSpeed)
+            _velocity = Vector2.Zero;
+    }
 
     protected override void UpdateVelocity(GameTime gameTime)
     {
-        _velocity = Vector2.Zero;
-        // крутой аирконтроль чел
-        if (_mechanics.Velocity == Vector2.Zero)
-        {
-            Accelerate(Directions);
-            if (_velocity != Vector2.Zero)
-            {
-                _velocity.Normalize();
-                _velocity *= _speed;
-            }
-        }
+        Accelerate();
+        Normalize();
+        Hold();
         Directions.Clear();
     }
 
