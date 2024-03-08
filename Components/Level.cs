@@ -12,14 +12,14 @@ public class Level : DrawableGameComponent
     public Queue History => _history;
     
     public Player Player => _player;
-    public List<Projectile> Projectiles { get; } = new();
     public List<Entity> Entities { get; } = new();
+    public List<Projectile> Projectiles { get; } = new();
     
     protected IEnumerable<IUpdateable> Updateables()
     {
-        var value = new IUpdateable[Projectiles.Count + Entities.Count];
-        Array.Copy(Projectiles.ToArray(), value, Projectiles.Count);
+        var value = new IUpdateable[Entities.Count + Projectiles.Count];
         Array.Copy(Entities.ToArray(), 0, value, Projectiles.Count, Entities.Count);
+        Array.Copy(Projectiles.ToArray(), value, Projectiles.Count);
         return value;
     }
 
