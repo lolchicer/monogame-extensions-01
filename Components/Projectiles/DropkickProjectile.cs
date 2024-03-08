@@ -5,12 +5,17 @@ namespace MonogameTest01;
 public class DropkickProjectile : Projectile
 {
     private int _duration = 3;
-    
+
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
 
-        _duration--;
+        Level.History.Add(
+            () =>
+            {
+                _duration--;
+                Check();
+            });
     }
 
     protected override bool Alive => _duration > 0;
