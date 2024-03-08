@@ -4,7 +4,7 @@ namespace MonogameTest01;
 
 public class Friction : FirstAffector, ILinkingComponent
 {
-    private const float _speed = 2.0f;
+    private const float _speed = 3.0f;
     // возможно лишнее свойство
     private Mechanics _mechanics;
     private Vector2 _linkingComponentVelocity;
@@ -17,8 +17,9 @@ public class Friction : FirstAffector, ILinkingComponent
             var normalizedVelocity = StartVelocity;
             normalizedVelocity.Normalize();
             _velocity = (-normalizedVelocity) * _speed;
-            _linkingComponentVelocity = _velocity;
         }
+        
+        _linkingComponentVelocity = _velocity;
     }
     // инстанц потребуется в дальнейшем
     public Vector2 DestinatedVelocity => Vector2.Zero;
