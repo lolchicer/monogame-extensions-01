@@ -10,11 +10,13 @@ public class Level : DrawableGameComponent
     private Player _player;
 
     public Queue History => _history;
-    
+
     public Player Player => _player;
     public List<Entity> Entities { get; } = new();
     public List<Projectile> Projectiles { get; } = new();
-    
+
+    public CollisionMeta CollisionMeta { get; } = new();
+
     protected IEnumerable<IUpdateable> Updateables()
     {
         var value = new IUpdateable[Entities.Count + Projectiles.Count];

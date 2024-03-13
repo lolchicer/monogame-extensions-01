@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
-public class Mechanics : LevelComponent
+public class Mechanics : LevelComponent, IPushing
 {
     private IList<Affector> _affectors = new List<Affector>();
     private Queue _history;
@@ -13,6 +13,7 @@ public class Mechanics : LevelComponent
     
     public Vector2 Velocity { get; set; } = new() { X = 0, Y = 0 };
     public Vector2 Position { get; set; } = new() { X = 0, Y = 0 };
+    public Vector2 Hitbox { get; set; } = new() { X = 0, Y = 0 };
 
     public IList<Affector> Affectors => _affectors;
     public SteppedQueue Queue => _queue;
@@ -27,6 +28,9 @@ public class Mechanics : LevelComponent
 
         base.Update(gameTime);
     }
+
+    public Vector2 Normal(Vector2 vector, Vector2 velocity) =>
+    new SurfaceQuad(Position, Hitbox).Normal(vector, velocity);
 
     public Mechanics(Level level)
     : base(level)

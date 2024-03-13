@@ -50,18 +50,21 @@ public abstract class Entity : LevelComponent, IDrawable
     public Entity(Level level)
     : base(level)
     {
-        Mechanics = new(level);
+        Mechanics = new(level)
+        {
+            Hitbox = new() { X = 64, Y = 64 }
+        };
 
         _input = new Input(Mechanics);
         var friction = new Friction(Mechanics);
+        var collision = new Collision(Mechanics, level.CollisionMeta);
 
         foreach (var affector in new Affector[] {
             _input,
             friction,
-            new Linking(new[] { friction }, Mechanics)
+            new Linking(new ILinkingComponent[] { friction, collision }, Mechanics)
         }) Mechanics.Affectors.Add(affector);
         // _affectors.Add(new Test(mechanics));
-        // new Collision(Mechanics, _mechanicsVelocityPoller, _mechanicsPositionPoller, _level.CollisionMeta, new Vector2() { X = 10, Y = 10 }),
 
         Health = new(this);
         Spells = new(level);
