@@ -9,10 +9,10 @@ public static class CollidesExtensions
     public static bool Collides(this Surface @this, Vector2 value) =>
     @this.Direction switch
     {
-        Directions.Twodimensional.Enum.Leftwards => value.X - @this.Float <= 0 ,
-        Directions.Twodimensional.Enum.Updwards => value.Y - @this.Float <= 0,
-        Directions.Twodimensional.Enum.Rightwards => value.X - @this.Float >= 0,
-        Directions.Twodimensional.Enum.Downwards => value.Y - @this.Float >= 0,
+        Directions.Twodimensional.Enum.Leftwards => value.X - @this.Float >= 0,
+        Directions.Twodimensional.Enum.Updwards => value.Y - @this.Float >= 0,
+        Directions.Twodimensional.Enum.Rightwards => value.X - @this.Float <= 0,
+        Directions.Twodimensional.Enum.Downwards => value.Y - @this.Float <= 0,
         _ => value.X - @this.Float <= 0
     };
 

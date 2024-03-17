@@ -31,23 +31,15 @@ public struct SurfaceQuad : IPushing
         new() { Float = Bottom, Direction = Directions.Twodimensional.Enum.Downwards }
     };
 
-    public Vector2 Normal(Vector2 vector, Vector2 velocity)
-    {
-        var a = vector + velocity;
-        var normals = new List<Vector2>();
-        foreach (var surface in Surfaces)
-            if (surface.Collides(a))
-                normals.Add(surface.Normal(a));
-            else
-                normals.Add(Vector2.Zero);
-        return normals.Max();
-    }
+    public Vector2 Normal(Vector2 vector, Vector2 velocity) => (
+        from surface in Surfaces
+        select surface.Cropped(vector + velocity)).Max();
 
     public SurfaceQuad(Vector2 vector, Vector2 hitbox)
     {
         Left = vector.X;
         Top = vector.Y;
-        Right = hitbox.X;
-        Bottom = hitbox.Y;
+        Right = hitbox.X + vector.X;
+        Bottom = hitbox.Y + vector.Y;
     }
 }

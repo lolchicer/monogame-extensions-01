@@ -4,6 +4,7 @@ public enum Enum
 {
     Leftwards,
     Rightwards,
+    Still
 }
 
 public struct Duo : ITuple

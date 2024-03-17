@@ -5,7 +5,8 @@ public enum Enum
     Leftwards,
     Updwards,
     Rightwards,
-    Downwards
+    Downwards,
+    Still
 }
 
 public struct Quad : ITuple

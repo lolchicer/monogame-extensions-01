@@ -1,21 +1,25 @@
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace MonogameTest01;
 
 public static class CroppedExtensions
 {
-    public static Vector2 Cropped(this Vector2 @this, Surface value)
+    public static Vector2 Cropped(this Surface @this, Vector2 value)
     {
-        var resized = @this.Resized(value);
-        var cropped = resized - @this;
-
-        var @thisNormalized = @this;
-        @thisNormalized.Normalize();
-        var croppedNormalized = cropped;
-        croppedNormalized.Normalize();
-        if (croppedNormalized == @thisNormalized)
-            return Vector2.Zero;
+        if (@this.Collides(value))
+            return @this.Normal(value);
         else
-            return cropped;
+            return Vector2.Zero;
+    }
+
+    public static Vector2 Cropped(this SurfaceQuad @this, Vector2 value)
+    {
+        if (@this.Collides(value))
+            return (
+                from surface in @this.Surfaces
+                select surface.Normal(value)).Max();
+        else
+            return Vector2.Zero;
     }
 }
